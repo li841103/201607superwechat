@@ -59,7 +59,6 @@ public interface I {
 	}
 
 	String ROOT_SERVICE								=		"http://127.0.0.1:8080/SuperWeChatServer/Server?";
-//	String AVATAR_PATH 								= 		"E:/test/";
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
 	String PAGE_ID 									= 		"page_id";						//分页的起始下标

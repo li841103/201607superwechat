@@ -58,7 +58,7 @@ public interface I {
 		String UPDATE_TIME 							= 		"m_location_last_update_time";	//最后更新时间
 	}
 
-	String ROOT_SERVICE								=		"http://127.0.0.1:8080/SuperWeChatServer/Server?";
+	String SERVER_ROOT								=		"http://127.0.0.1:8080/SuperWeChatServer/Server?";
 	String ISON8859_1 								= 		"iso8859-1";
 	String UTF_8 									= 		"utf-8";
 	String PAGE_ID 									= 		"page_id";						//分页的起始下标
@@ -79,6 +79,7 @@ public interface I {
 	String AVATAR_TYPE_GROUP_PATH 					=		"group_icon";					//群组头像保存目录
 	String AVATAR_SUFFIX_PNG						=		".png";							//PNG图片后缀名
 	String AVATAR_SUFFIX_JPG						=		".jpg";							//JPG图片后缀名
+	String QUESTION 								= 		"?";							//问号
 	int LOCATION_IS_SEARCH_ALLOW					=		1;								//可以被搜索到地理位置
 	int LOCATION_IS_SEARCH_INHIBIT					=		0;								//禁止被搜索到地理位置
 	int MSG_SUCCESS						            =  		0;							    //默认成功

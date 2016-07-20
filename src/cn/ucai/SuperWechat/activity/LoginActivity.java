@@ -40,6 +40,7 @@ import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
 import cn.ucai.SuperWechat.bean.Result;
+import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.domain.User;
 import cn.ucai.SuperWechat.utils.CommonUtils;
@@ -179,6 +180,9 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onSuccess(Result result) {
 						if(result!=null&&result.isRetMsg()){
+							UserAvatar retData = (UserAvatar) result.getRetData();
+							UserDao dao=new UserDao(LoginActivity.this);
+							dao.saveMyDB(retData);
 							EMLogin();
 						}else{
 							pd.dismiss();
@@ -195,6 +199,8 @@ public class LoginActivity extends BaseActivity {
 					}
 				});
 	}
+
+
 
 	private void EMLogin() {
 		// 登陆成功，保存用户名密码

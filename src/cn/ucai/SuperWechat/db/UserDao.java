@@ -16,9 +16,12 @@ package cn.ucai.SuperWechat.db;
 import java.util.List;
 import java.util.Map;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 
 
+import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.domain.RobotUser;
 import cn.ucai.SuperWechat.domain.User;
 
@@ -85,7 +88,7 @@ public class UserDao {
 	 * @param user
 	 */
 	public void saveContact(User user){
-	    DemoDBManager.getInstance().saveContact(user);
+		DemoDBManager.getInstance().saveContact(user);
 	}
 	
 	public void setDisabledGroups(List<String> groups){
@@ -111,4 +114,9 @@ public class UserDao {
     public void saveRobotUser(List<RobotUser> robotList){
     	DemoDBManager.getInstance().saveRobotList(robotList);
     }
+
+	public void saveMyDB(UserAvatar user){
+		DemoDBManager.getInstance().saveMyDB(user);
+	}
+
 }

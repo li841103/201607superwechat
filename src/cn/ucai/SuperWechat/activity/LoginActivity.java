@@ -35,6 +35,8 @@ import com.easemob.EMCallBack;
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.squareup.okhttp.internal.Util;
+
 import cn.ucai.SuperWechat.Constant;
 import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
@@ -171,21 +173,23 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void LoginMy() {
-		OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_LOGIN)
 				.addParam(I.User.USER_NAME,currentUsername)
 				.addParam(I.User.PASSWORD,currentPassword)
-				.targetClass(Result.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
-					public void onSuccess(Result result) {
-						if(result!=null&&result.isRetMsg()){
+					public void onSuccess(String s) {
+						if(s!=null){
+							Result result = Utils.getPageResultFromJson(s, UserAvatar.class);
 							UserAvatar retData = (UserAvatar) result.getRetData();
 							UserDao dao=new UserDao(LoginActivity.this);
 							dao.saveMyDB(retData);
-							EMLogin();
+							EMLogin(retData);
 						}else{
 							pd.dismiss();
+							Result result = Utils.getPageResultFromJson(s, UserAvatar.class);
 							Toast.makeText(getApplicationContext(), Utils.getResourceString(LoginActivity.this,result.getRetCode()),
 									Toast.LENGTH_SHORT).show();
 						}
@@ -202,10 +206,12 @@ public class LoginActivity extends BaseActivity {
 
 
 
-	private void EMLogin() {
+	private void EMLogin(UserAvatar user) {
 		// 登陆成功，保存用户名密码
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
+		SuperWeChatApplication.getInstance().setUserAvatar(user);
+
 
 
 		try {

@@ -18,13 +18,24 @@ import android.content.Context;
 
 import com.easemob.EMCallBack;
 
+import java.util.List;
+
+import cn.ucai.SuperWechat.bean.UserAvatar;
+
 public class SuperWeChatApplication extends Application {
 
+	public SuperWeChatApplication() {
+	}
+
+	private List<UserAvatar> userAvatars;
+	public SuperWeChatApplication(List<UserAvatar> userAvatars) {
+		this.userAvatars = userAvatars;
+	}
 	public static Context applicationContext;
 	private static SuperWeChatApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
-	
+	private UserAvatar userAvatar;
 	/**
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
@@ -100,11 +111,20 @@ public class SuperWeChatApplication extends Application {
 	    hxSDKHelper.setPassword(pwd);
 	}
 
+	public void setUserAvatar(UserAvatar userAvatar) {
+		this.userAvatar = userAvatar;
+	}
+
 	/**
 	 * 退出登录,清空数据
 	 */
 	public void logout(final boolean isGCM,final EMCallBack emCallBack) {
 		// 先调用sdk logout，在清理app中自己的数据
 	    hxSDKHelper.logout(isGCM,emCallBack);
+	}
+
+
+	public void setUserAvatars(List<UserAvatar> userAvatars) {
+		this.userAvatars = userAvatars;
 	}
 }

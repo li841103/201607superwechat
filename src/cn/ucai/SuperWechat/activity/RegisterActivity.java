@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -202,20 +203,43 @@ public class RegisterActivity extends BaseActivity {
 							int errorCode=e.getErrorCode();
 							if(errorCode==EMError.NONETWORK_ERROR){
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomalies), Toast.LENGTH_SHORT).show();
+								unRegister();
 							}else if(errorCode == EMError.USER_ALREADY_EXISTS){
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.User_already_exists), Toast.LENGTH_SHORT).show();
+								unRegister();
 							}else if(errorCode == EMError.UNAUTHORIZED){
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.registration_failed_without_permission), Toast.LENGTH_SHORT).show();
+								unRegister();
 							}else if(errorCode == EMError.ILLEGAL_USER_NAME){
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.illegal_user_name),Toast.LENGTH_SHORT).show();
+								unRegister();
 							}else{
 								Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed) + e.getMessage(), Toast.LENGTH_SHORT).show();
+								unRegister();
 							}
 						}
 					});
 				}
 			}
 		}).start();
+	}
+
+	public void unRegister(){
+		OkHttpUtils2 utils = new OkHttpUtils2();
+		utils.setRequestUrl(I.REQUEST_UNREGISTER)
+				.addParam(I.User.USER_NAME,username)
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener() {
+					@Override
+					public void onSuccess(Object result) {
+						Log.i("main", "result:" + result);
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "error:" + error);
+					}
+				});
 	}
 
 	public void back(View view) {

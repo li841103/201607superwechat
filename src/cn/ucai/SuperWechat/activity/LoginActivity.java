@@ -44,6 +44,7 @@ import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.domain.User;
 import cn.ucai.SuperWechat.utils.CommonUtils;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
+import cn.ucai.SuperWechat.utils.Utils;
 import cn.ucai.SuperWechat.widget.I;
 
 /**
@@ -181,7 +182,7 @@ public class LoginActivity extends BaseActivity {
 							EMLogin();
 						}else{
 							pd.dismiss();
-							Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + result.getRetCode(),
+							Toast.makeText(getApplicationContext(), Utils.getResourceString(LoginActivity.this,result.getRetCode()),
 									Toast.LENGTH_SHORT).show();
 						}
 					}

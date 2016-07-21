@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.bean.Result;
@@ -36,15 +37,15 @@ public class DownAllContact {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        Log.i("main", "好友数据：" + s);
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
-                        Log.i("main", "执行到了这里！list.size=="+list.size());
-                        for (UserAvatar u : list) {
-                            Log.i("main", "每一个用户的信息：" + u.toString());
-                        }
+
                         if (list != null && list.size() > 0) {
                             SuperWeChatApplication.getInstance().setUserAvatars(list);
+                            Map<String, UserAvatar> map = SuperWeChatApplication.getInstance().getStringUserAvatarMap();
+                            for(UserAvatar u:list){
+                                map.put(u.getMUserName(), u);
+                            }
                             context.sendStickyBroadcast(new Intent("update_contact_list"));
                         }
                     }

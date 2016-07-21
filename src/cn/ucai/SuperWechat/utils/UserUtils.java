@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.domain.User;
 import com.squareup.picasso.Picasso;
 
@@ -30,6 +32,20 @@ public class UserUtils {
         }
         return user;
     }
+
+
+	/**
+	 * 根据username获取相应UserAvatar
+	 * @param username
+	 * @return
+	 */
+	public static UserAvatar getAppUserInfo(String username){
+		UserAvatar user = SuperWeChatApplication.getInstance().getStringUserAvatarMap().get(username);
+		if(user == null){
+			user = new UserAvatar(username);
+		}
+		return user;
+	}
     
     /**
      * 设置用户头像
@@ -67,6 +83,22 @@ public class UserUtils {
     		textView.setText(username);
     	}
     }
+
+	/**
+	 * 设置用户好友的昵称
+	 */
+	public static void setAppUserNick(String username,TextView textView){
+		UserAvatar user = getAppUserInfo(username);
+		if(user != null){
+			if(user.getMUserNick()!=null){
+				textView.setText(user.getMUserNick());
+			}else{
+				textView.setText(username);
+			}
+		}else{
+			textView.setText(username);
+		}
+	}
     
     /**
      * 设置当前用户昵称
@@ -80,7 +112,7 @@ public class UserUtils {
     
     /**
      * 保存或更新某个用户
-     * @param user
+     * @param
      */
 	public static void saveUserInfo(User newUser) {
 		if (newUser == null || newUser.getUsername() == null) {

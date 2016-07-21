@@ -128,6 +128,7 @@ public class DemoDBManager {
 
 
     synchronized public void saveMyDB(UserAvatar user){
+        Log.i("main","这里面的信息是："+user);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(UserDao.SUPERWECHAT_AVATAR_ID, user.getMUserName());

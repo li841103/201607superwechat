@@ -128,18 +128,16 @@ public class DemoDBManager {
 
 
     synchronized public void saveMyDB(UserAvatar user){
-        Log.i("main","这里面的信息是："+user);
+        Log.i("main", "登陆成功后保存到表中的数据：" + user.toString());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UserDao.SUPERWECHAT_AVATAR_ID, user.getMUserName());
+        values.put(UserDao.SUPERWECHAT_COLUMN_NAME_ID, user.getMUserName());
         values.put(UserDao.SUPERWECHAT_COLUMN_NAME_NICK, user.getMUserNick());
         values.put(UserDao.SUPERWECHAT_AVATAR_ID, user.getMAvatarId());
         values.put(UserDao.SUPERWECHAT_AVATAR_PATH, user.getMAvatarPath());
         values.put(UserDao.SUPERWECHAT_AVATAR_TYPE, user.getMAvatarType());
         values.put(UserDao.SUPERWECHAT_AVATAR_LASTUPDATETIME, user.getMAvatarLastUpdateTime());
-        if(db.isOpen()){
-            db.replace(UserDao.SUPERWECHAT_TABLE_NAME, null, values);
-        }
+        db.replace(UserDao.SUPERWECHAT_TABLE_NAME, null, values);
     }
     
     public void setDisabledGroups(List<String> groups){
@@ -365,13 +363,14 @@ public class DemoDBManager {
 	}
 
 
-    public UserAvatar getUserAvatar(String userName) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        UserAvatar u = new UserAvatar();
-        if (db.isOpen()) {
-            Cursor cursor = db.rawQuery("select * from " + UserDao.SUPERWECHAT_TABLE_NAME + " where " + UserDao.SUPERWECHAT_COLUMN_NAME_ID + " =?", new String[]{userName});
+    synchronized public UserAvatar getUserAvatar(String userName) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        UserAvatar u =null;
+            Cursor cursor = db.rawQuery("select * from " + UserDao.SUPERWECHAT_TABLE_NAME + " where "
+                    + UserDao.SUPERWECHAT_COLUMN_NAME_ID + "=?", new String[]{userName});
+
             if(cursor.moveToNext()){
-                Log.i("main", "有数据，执行到了这里！");
+                u = new UserAvatar();
                 u.setMUserName(userName);
                 u.setMUserNick(cursor.getString(cursor.getColumnIndex(UserDao.SUPERWECHAT_COLUMN_NAME_NICK)));
                 u.setMAvatarId(cursor.getInt(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_ID)));
@@ -380,7 +379,8 @@ public class DemoDBManager {
                 u.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_LASTUPDATETIME)));
                 return u;
             }
-        }
         return u;
     }
+
+
 }

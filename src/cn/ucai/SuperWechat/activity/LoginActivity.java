@@ -185,8 +185,7 @@ public class LoginActivity extends BaseActivity {
 						if(s!=null){
 							Result result = Utils.getResultFromJson(s, UserAvatar.class);
 							UserAvatar retData = (UserAvatar) result.getRetData();
-							UserDao dao=new UserDao(LoginActivity.this);
-							dao.saveMyDB(retData);
+							saveMyDB(retData);
 							EMLogin(retData);
 						}else{
 							pd.dismiss();
@@ -205,6 +204,12 @@ public class LoginActivity extends BaseActivity {
 				});
 	}
 
+	private void saveMyDB(UserAvatar retData) {
+		if(retData!=null){
+			UserDao dao = new UserDao(LoginActivity.this);
+			dao.saveMyDB(retData);
+		}
+	}
 
 
 	private void EMLogin(UserAvatar user) {

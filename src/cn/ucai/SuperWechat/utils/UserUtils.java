@@ -2,6 +2,7 @@ package cn.ucai.SuperWechat.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.domain.User;
+import cn.ucai.SuperWechat.widget.I;
+
 import com.squareup.picasso.Picasso;
 
 public class UserUtils {
@@ -59,6 +62,36 @@ public class UserUtils {
             Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
         }
     }
+
+	/**
+	 * 设置用户头像
+	 * @param username
+	 */
+	public static void setAppUserAvatar(Context context, String username, ImageView imageView){
+		String user=username;
+		String path =getUserAvatarPath(user);
+		if(user != null&&path!=null){
+			path = UserUtils.getUserAvatarPath(user);
+			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+		}else{
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
+
+	public static String getUserAvatarPath(String username){
+		StringBuilder sb = new StringBuilder();
+		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)
+				.append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.ALT).append(I.NAME_OR_HXID)
+				.append(I.EQUAL).append(username)
+				.append(I.ALT).append(I.AVATAR_TYPE)
+				.append(I.EQUAL)
+				.append(I.AVATAR_TYPE_USER_PATH);
+
+		http://127.0.0.1:8080/SuperWeChatServer/Server?request=download_avatar&name_or_hxid=&avatarType=
+		Log.i("main", sb.toString());
+		return sb.toString();
+	}
     
     /**
      * 设置当前用户头像

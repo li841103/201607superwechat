@@ -56,6 +56,7 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
+
 					String userName = SuperWeChatApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar userAvatar = dao.getUserAvatar(userName);

@@ -39,7 +39,6 @@ public class DownAllContact {
                     public void onSuccess(String s) {
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
-
                         if (list != null && list.size() > 0) {
                             SuperWeChatApplication.getInstance().setUserAvatars(list);
                             Map<String, UserAvatar> map = SuperWeChatApplication.getInstance().getStringUserAvatarMap();

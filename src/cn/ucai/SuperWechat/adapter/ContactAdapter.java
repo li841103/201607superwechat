@@ -88,6 +88,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			Log.d("ContactAdapter", position + "");
 		//设置nick，demo里不涉及到完整user，用username代替nick显示
 		String username = user.getUsername();
+		Log.i("main", "username===!!!" + username);
 		String header = user.getHeader();
 		if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
 			if (TextUtils.isEmpty(header)) {
@@ -125,7 +126,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		   //  holder.nameTextview.setText(user.getNick());
 			UserUtils.setAppUserNick(username,holder.nameTextview);
 		    //设置用户头像
-			UserUtils.setUserAvatar(getContext(), username, holder.avatar);
+			UserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
 			if(holder.unreadMsgView != null)
 			    holder.unreadMsgView.setVisibility(View.INVISIBLE);
 		}

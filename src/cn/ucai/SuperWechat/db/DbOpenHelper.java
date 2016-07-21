@@ -16,6 +16,7 @@ package cn.ucai.SuperWechat.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 
@@ -82,12 +83,12 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		Log.i("main", "这个时候进入了onCreateDB");
 		db.execSQL(USERNAME_TABLE_CREATE);
 		db.execSQL(INIVTE_MESSAGE_TABLE_CREATE);
 		db.execSQL(CREATE_PREF_TABLE);
 		db.execSQL(ROBOT_TABLE_CREATE);
 		db.execSQL(USER_AVATAR_CREATE);
-		
 	}
 
 	@Override

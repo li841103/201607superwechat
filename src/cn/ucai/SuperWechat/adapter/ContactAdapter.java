@@ -33,6 +33,7 @@ import cn.ucai.SuperWechat.Constant;
 import cn.ucai.SuperWechat.R;
 import cn.ucai.SuperWechat.domain.User;
 import cn.ucai.SuperWechat.utils.UserUtils;
+import cn.ucai.SuperWechat.widget.I;
 
 import com.easemob.util.EMLog;
 
@@ -195,8 +196,8 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 			if(mOriginalList==null){
 			    mOriginalList = new ArrayList<User>();
 			}
-			EMLog.d(TAG, "contacts original size: " + mOriginalList.size());
-			EMLog.d(TAG, "contacts copy size: " + copyUserList.size());
+			Log.e(TAG, "contacts original size: " + mOriginalList.size());
+			Log.e(TAG, "contacts copy size: " + copyUserList.size());
 			
 			if(prefix==null || prefix.length()==0){
 				results.values = copyUserList;
@@ -209,20 +210,22 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 					final User user = mOriginalList.get(i);
 					String username = user.getUsername();
 					
-					if(username.startsWith(prefixString)){
-						newValues.add(user);
+					if(username.contains(prefixString)){
+						if(!user.equals(Constant.CHAT_ROOM)&&!user.equals(Constant.ACCOUNT_REMOVED)){
+							newValues.add(user);
+						}
 					}
 					else{
-						 final String[] words = username.split(" ");
-	                     final int wordCount = words.length;
-	
-	                     // Start at index 0, in case valueText starts with space(s)
-	                     for (int k = 0; k < wordCount; k++) {
-	                         if (words[k].startsWith(prefixString)) {
-	                             newValues.add(user);
-	                             break;
-	                         }
-	                     }
+//						 final String[] words = username.split(" ");
+//	                     final int wordCount = words.length;
+//
+//	                     // Start at index 0, in case valueText starts with space(s)
+//	                     for (int k = 0; k < wordCount; k++) {
+//	                         if (words[k].startsWith(prefixString)) {
+	                             newValues.clear();
+//	                             break;
+//	                         }
+//	                     }
 					}
 				}
 				results.values=newValues;

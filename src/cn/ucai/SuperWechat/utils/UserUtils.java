@@ -88,7 +88,6 @@ public class UserUtils {
 				.append(I.EQUAL)
 				.append(I.AVATAR_TYPE_USER_PATH);
 
-		http://127.0.0.1:8080/SuperWeChatServer/Server?request=download_avatar&name_or_hxid=&avatarType=
 		Log.i("main", sb.toString());
 		return sb.toString();
 	}

@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMValueCallBack;
+
+import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
@@ -50,9 +52,16 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_user_profile);
 		initView();
+
 		initListener();
 	}
-	
+
+	private void initCreate() {
+		UserUtils.setAppUserAvatar(UserProfileActivity.this,SuperWeChatApplication.getInstance().getUserName(),headAvatar);
+		UserUtils.setAppUserNick(SuperWeChatApplication.getInstance().getUserName(),tvNickName);
+	}
+
+
 	private void initView() {
 		headAvatar = (ImageView) findViewById(R.id.user_head_avatar);
 		headPhotoUpdate = (ImageView) findViewById(R.id.user_head_headphoto_update);
@@ -77,17 +86,18 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 		if (username == null) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
-			UserUtils.setCurrentUserNick(tvNickName);
-			UserUtils.setCurrentUserAvatar(this, headAvatar);
+			UserUtils.setAppUserAvatar(UserProfileActivity.this,SuperWeChatApplication.getInstance().getUserName(),headAvatar);
+			UserUtils.setAppUserNick(SuperWeChatApplication.getInstance().getUserName(),tvNickName);
 		} else if (username.equals(EMChatManager.getInstance().getCurrentUser())) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setCurrentUserNick(tvNickName);
 			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else {
 			tvUsername.setText(username);
-			UserUtils.setUserNick(username, tvNickName);
-			UserUtils.setUserAvatar(this, username, headAvatar);
-			asyncFetchUserInfo(username);
+			UserUtils.setAppUserNick(username, tvNickName);
+			UserUtils.setAppUserAvatar(this, username, headAvatar);
+
+			//asyncFetchUserInfo(username);
 		}
 	}
 

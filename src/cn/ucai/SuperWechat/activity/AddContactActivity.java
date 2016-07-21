@@ -36,6 +36,7 @@ import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
+import cn.ucai.SuperWechat.utils.UserUtils;
 import cn.ucai.SuperWechat.utils.Utils;
 import cn.ucai.SuperWechat.widget.I;
 

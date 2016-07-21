@@ -119,4 +119,7 @@ public class UserDao {
 		DemoDBManager.getInstance().saveMyDB(user);
 	}
 
+	public UserAvatar getUserAvatar(String userName) {
+		return DemoDBManager.getInstance().getUserAvatar(userName);
+	}
 }

@@ -10,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+import android.util.Log;
 
 import cn.ucai.SuperWechat.Constant;
 import cn.ucai.SuperWechat.bean.UserAvatar;
@@ -361,7 +362,24 @@ public class DemoDBManager {
 		}
 		return users;
 	}
-    
-    
-    
+
+
+    public UserAvatar getUserAvatar(String userName) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        UserAvatar u = new UserAvatar();
+        if (db.isOpen()) {
+            Cursor cursor = db.rawQuery("select * from " + UserDao.SUPERWECHAT_TABLE_NAME + " where " + UserDao.SUPERWECHAT_COLUMN_NAME_ID + " =?", new String[]{userName});
+            if(cursor.moveToNext()){
+                Log.i("main", "有数据，执行到了这里！");
+                u.setMUserName(userName);
+                u.setMUserNick(cursor.getString(cursor.getColumnIndex(UserDao.SUPERWECHAT_COLUMN_NAME_NICK)));
+                u.setMAvatarId(cursor.getInt(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_ID)));
+                u.setMAvatarPath(cursor.getString(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_PATH)));
+                u.setMAvatarType(cursor.getInt(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_TYPE)));
+                u.setMAvatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.SUPERWECHAT_AVATAR_LASTUPDATETIME)));
+                return u;
+            }
+        }
+        return u;
+    }
 }

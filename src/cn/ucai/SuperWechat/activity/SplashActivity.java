@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,6 +14,10 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.SuperWeChatApplication;
+import cn.ucai.SuperWechat.bean.UserAvatar;
+import cn.ucai.SuperWechat.db.UserDao;
+import cn.ucai.SuperWechat.task.DownAllContact;
 
 /**
  * 开屏页
@@ -21,7 +26,7 @@ import cn.ucai.SuperWechat.R;
 public class SplashActivity extends BaseActivity {
 	private RelativeLayout rootLayout;
 	private TextView versionText;
-	
+
 	private static final int sleepTime = 2000;
 
 	@Override
@@ -51,6 +56,13 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
+					String userName = SuperWeChatApplication.getInstance().getUserName();
+					UserDao dao = new UserDao(SplashActivity.this);
+					UserAvatar userAvatar = dao.getUserAvatar(userName);
+					Log.i("main", "这是闪屏界面输出的信息，userAvatar的信息如下：" + userAvatar);
+					SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
+					SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+					new DownAllContact(SplashActivity.this).exec(userName);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {
@@ -75,7 +87,7 @@ public class SplashActivity extends BaseActivity {
 		}).start();
 
 	}
-	
+
 	/**
 	 * 获取当前应用程序的版本号
 	 */

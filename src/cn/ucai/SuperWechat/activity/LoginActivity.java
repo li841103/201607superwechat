@@ -45,6 +45,7 @@ import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.domain.User;
+import cn.ucai.SuperWechat.task.DownAllContact;
 import cn.ucai.SuperWechat.utils.CommonUtils;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.Utils;
@@ -182,7 +183,7 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String s) {
 						if(s!=null){
-							Result result = Utils.getPageResultFromJson(s, UserAvatar.class);
+							Result result = Utils.getResultFromJson(s, UserAvatar.class);
 							UserAvatar retData = (UserAvatar) result.getRetData();
 							UserDao dao=new UserDao(LoginActivity.this);
 							dao.saveMyDB(retData);
@@ -211,7 +212,8 @@ public class LoginActivity extends BaseActivity {
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
 		SuperWeChatApplication.getInstance().setUserAvatar(user);
-
+		SuperWeChatApplication.currentUserNick=user.getMUserNick();
+		new DownAllContact(LoginActivity.this).exec(currentUsername);
 
 
 		try {

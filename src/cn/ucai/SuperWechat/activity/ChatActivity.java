@@ -386,12 +386,11 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 				isRobot = true;
 				String nick = robotMap.get(toChatUsername).getNick();
 				if(!TextUtils.isEmpty(nick)){
-					((TextView) findViewById(R.id.name)).setText(nick);
 				}else{
 					((TextView) findViewById(R.id.name)).setText(toChatUsername);
 				}
 			}else{
-				UserUtils.setUserNick(toChatUsername, (TextView) findViewById(R.id.name));
+				UserUtils.setAppUserNick(toChatUsername, (TextView) findViewById(R.id.name));
 			}
 		} else {
 			// 群聊

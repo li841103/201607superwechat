@@ -93,8 +93,8 @@ public class UserUtils {
 	}
     
     /**
-     * 设置当前用户头像
-     */
+	 * 设置当前用户头像
+	 */
 	public static void setCurrentUserAvatar(Context context, ImageView imageView) {
 		User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().getCurrentUserInfo();
 		if (user != null && user.getAvatar() != null) {
@@ -131,7 +131,20 @@ public class UserUtils {
 			textView.setText(username);
 		}
 	}
-    
+
+
+
+	/**
+	 * 设置当前用户头像
+	 */
+	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
+		UserAvatar avatar = UserUtils.getAppUserInfo(SuperWeChatApplication.getInstance().getUserName());
+		if (avatar != null && avatar.getMAvatarId() != null) {
+			Picasso.with(context).load(avatar.getMAvatarPath()).placeholder(R.drawable.default_avatar).into(imageView);
+		} else {
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
     /**
      * 设置当前用户昵称
      */
@@ -141,6 +154,22 @@ public class UserUtils {
     		textView.setText(user.getNick());
     	}
     }
+
+
+	public static void setAppCurrentUserNick(TextView textView){
+		String userName = SuperWeChatApplication.getInstance().getUserName();
+		User user = UserUtils.getUserInfo(userName);
+		if(user != null){
+			if(user.getNick()!=null){
+				textView.setText(user.getNick());
+			}else{
+				textView.setText(user.getNick());
+			}
+		}else{
+			textView.setText(user.getNick());
+
+		}
+	}
     
     /**
      * 保存或更新某个用户

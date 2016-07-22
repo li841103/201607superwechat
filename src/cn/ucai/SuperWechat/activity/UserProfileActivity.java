@@ -84,15 +84,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			headPhotoUpdate.setVisibility(View.GONE);
 			iconRightArrow.setVisibility(View.INVISIBLE);
 		}
-		if (username == null) {
+		if (username == null||username.equals(EMChatManager.getInstance().getCurrentUser())) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
-			UserUtils.setAppUserAvatar(UserProfileActivity.this,SuperWeChatApplication.getInstance().getUserName(),headAvatar);
-			UserUtils.setAppUserNick(SuperWeChatApplication.getInstance().getUserName(),tvNickName);
-		} else if (username.equals(EMChatManager.getInstance().getCurrentUser())) {
-			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
-			UserUtils.setCurrentUserNick(tvNickName);
-			UserUtils.setCurrentUserAvatar(this, headAvatar);
-		} else {
+			UserUtils.setAppCurrentUserNick(tvNickName);
+			UserUtils.setAppUserAvatar(this,EMChatManager.getInstance().getCurrentUser(),headAvatar);
+		}else {
 			tvUsername.setText(username);
 			UserUtils.setAppUserNick(username, tvNickName);
 			UserUtils.setAppUserAvatar(this, username, headAvatar);

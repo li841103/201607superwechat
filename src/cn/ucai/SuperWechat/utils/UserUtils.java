@@ -138,12 +138,15 @@ public class UserUtils {
 	 * 设置当前用户头像
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
-		UserAvatar avatar = UserUtils.getAppUserInfo(SuperWeChatApplication.getInstance().getUserName());
+		/*UserAvatar avatar = UserUtils.getAppUserInfo(SuperWeChatApplication.getInstance().getUserName());
 		if (avatar != null && avatar.getMAvatarId() != null) {
 			Picasso.with(context).load(avatar.getMAvatarPath()).placeholder(R.drawable.default_avatar).into(imageView);
 		} else {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
-		}
+		}*/
+
+		String userName = SuperWeChatApplication.getInstance().getUserName();
+		setAppUserAvatar(context, userName, imageView);
 	}
     /**
      * 设置当前用户昵称

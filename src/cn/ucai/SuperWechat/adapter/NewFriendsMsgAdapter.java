@@ -33,9 +33,15 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.bean.Result;
+import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.InviteMessgeDao;
 import cn.ucai.SuperWechat.domain.InviteMessage;
 import cn.ucai.SuperWechat.domain.InviteMessage.InviteMesageStatus;
+import cn.ucai.SuperWechat.utils.OkHttpUtils2;
+import cn.ucai.SuperWechat.utils.UserUtils;
+import cn.ucai.SuperWechat.utils.Utils;
+import cn.ucai.SuperWechat.widget.I;
 
 public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 
@@ -124,6 +130,33 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			}
 
 			// 设置用户头像
+			UserUtils.setAppUserAvatar(context, msg.getFrom(), holder.avator);
+			OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_FIND_USER)
+					.addParam(I.User.USER_NAME,msg.getFrom())
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String s) {
+							if(s!=null){
+								Result result = Utils.getResultFromJson(s, UserAvatar.class);
+								if(result!=null&&result.isRetMsg()){
+									UserAvatar user = (UserAvatar) result.getRetData();
+									if(user!=null){
+										UserUtils.setAppUserNick(user,holder.name);
+									}
+								}
+							}else{
+								holder.name.setText(msg.getFrom());
+
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+
+						}
+					});
 		}
 
 		return convertView;
@@ -133,7 +166,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 	 * 同意好友请求或者群申请
 	 * 
 	 * @param button
-	 * @param username
+	 * @param
 	 */
 	private void acceptInvitation(final Button button, final InviteMessage msg) {
 		final ProgressDialog pd = new ProgressDialog(context);
@@ -174,7 +207,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 						@Override
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(context, str3 + e.getMessage(), 1).show();
+							Toast.makeText(context, str3 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 

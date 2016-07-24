@@ -132,19 +132,24 @@ public class UserUtils {
 		}
 	}
 
+	public static void setAppUserNick(UserAvatar user,TextView textView){
+		if(user != null){
+			if(user.getMUserNick()!=null){
+				textView.setText(user.getMUserNick());
+			}else{
+				textView.setText(user.getMUserName());
+			}
+		}else{
+			textView.setText(user.getMUserName());
+		}
+	}
+
 
 
 	/**
 	 * 设置当前用户头像
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
-		/*UserAvatar avatar = UserUtils.getAppUserInfo(SuperWeChatApplication.getInstance().getUserName());
-		if (avatar != null && avatar.getMAvatarId() != null) {
-			Picasso.with(context).load(avatar.getMAvatarPath()).placeholder(R.drawable.default_avatar).into(imageView);
-		} else {
-			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
-		}*/
-
 		String userName = SuperWeChatApplication.getInstance().getUserName();
 		setAppUserAvatar(context, userName, imageView);
 	}
@@ -166,10 +171,10 @@ public class UserUtils {
 			if(user.getNick()!=null){
 				textView.setText(user.getNick());
 			}else{
-				textView.setText(user.getNick());
+				textView.setText(user.getUsername());
 			}
 		}else{
-			textView.setText(user.getNick());
+			textView.setText(user.getUsername());
 
 		}
 	}

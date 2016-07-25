@@ -29,8 +29,14 @@ import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.bean.Result;
+import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.domain.User;
+import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.UserUtils;
+import cn.ucai.SuperWechat.utils.Utils;
+import cn.ucai.SuperWechat.widget.I;
+
 import com.squareup.picasso.Picasso;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
@@ -110,12 +116,33 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
-							String nickString = editText.getText().toString();
+							final String nickString = editText.getText().toString();
 							if (TextUtils.isEmpty(nickString)) {
 								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
 								return;
+							}else{
+								final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+								utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+										.addParam(I.User.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+										.addParam(I.User.NICK,nickString)
+										.targetClass(String.class)
+										.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+											@Override
+											public void onSuccess(String s) {
+												Result result = Utils.getResultFromJson(s, UserAvatar.class);
+												if(result!=null&&result.isRetMsg()){
+													updateRemoteNick(nickString);
+												}
+											}
+
+											@Override
+											public void onError(String error) {
+
+											}
+										});
+
 							}
-							updateRemoteNick(nickString);
+
 						}
 					}).setNegativeButton(R.string.dl_cancel, null).show();
 			break;

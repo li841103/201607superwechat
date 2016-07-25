@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,9 +16,13 @@ import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.DemoHXSDKHelper;
 import cn.ucai.SuperWechat.R;
 import cn.ucai.SuperWechat.SuperWeChatApplication;
+import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.task.DownAllContact;
+import cn.ucai.SuperWechat.utils.OkHttpUtils2;
+import cn.ucai.SuperWechat.utils.Utils;
+import cn.ucai.SuperWechat.widget.I;
 
 /**
  * 开屏页
@@ -61,8 +66,37 @@ public class SplashActivity extends BaseActivity {
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar userAvatar = dao.getUserAvatar(userName);
 					Log.i("main", "这是闪屏界面输出的信息，userAvatar的信息如下：" + userAvatar);
-					SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
-					SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+					if(userAvatar==null){
+						OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+						utils.setRequestUrl(I.REQUEST_FIND_USER)
+								.addParam(I.User.USER_NAME,userName)
+								.targetClass(String.class)
+								.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+									@Override
+									public void onSuccess(String s) {
+										Result result = Utils.getResultFromJson(s, UserAvatar.class);
+										if(result!=null){
+											UserAvatar userAvatar = (UserAvatar) result.getRetData();
+											if(userAvatar!=null){
+												SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
+												SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+											}else{
+
+											}
+										}
+
+
+									}
+
+									@Override
+									public void onError(String error) {
+										Log.i("main", "error:" + error);
+									}
+								});
+					}else{
+						SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
+						SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+					}
 					new DownAllContact(SplashActivity.this).exec(userName);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长

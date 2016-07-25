@@ -1,6 +1,7 @@
 package cn.ucai.SuperWechat.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -33,6 +34,7 @@ import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.domain.User;
+import cn.ucai.SuperWechat.listener.OnSetAvatarListener;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.UserUtils;
 import cn.ucai.SuperWechat.utils.Utils;
@@ -51,7 +53,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private TextView tvUsername;
 	private ProgressDialog dialog;
 	private RelativeLayout rlNickName;
-	
+	private OnSetAvatarListener mOnSetAvatarListener;
 	
 	
 	@Override
@@ -108,7 +110,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.user_head_avatar:
-			uploadHeadPhoto();
+			mOnSetAvatarListener = new OnSetAvatarListener(UserProfileActivity.this, R.id.Mydate,
+					SuperWeChatApplication.getInstance().getUserName(), I.AVATAR_TYPE_USER_PATH);
+			//registerAppSever();
+			//uploadHeadPhoto();
 			break;
 		case R.id.rl_nickname:
 			final EditText editText = new EditText(this);
@@ -158,6 +163,32 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 
 	}
+	private void registerAppSever() {
+		File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
+				I.AVATAR_TYPE_USER_PATH),SuperWeChatApplication.getInstance().getUserName()+I.AVATAR_SUFFIX_JPG);
+		OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
+				.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+				.addParam(I.NAME_OR_HXID,SuperWeChatApplication.getInstance().getUserName())
+				.addFile(file)
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						if(result.isRetMsg()) {
+							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success), Toast.LENGTH_SHORT)
+									.show();
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+
+
+	}
 	
 	public void asyncFetchUserInfo(String username){
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).getUserProfileManager().asyncGetUserInfo(username, new EMValueCallBack<User>() {
@@ -188,7 +219,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		builder.setTitle(R.string.dl_title_upload_photo);
 		builder.setItems(new String[] { getString(R.string.dl_msg_take_photo), getString(R.string.dl_msg_local_upload) },
 				new DialogInterface.OnClickListener() {
-
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						switch (which) {
@@ -260,6 +290,13 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			break;
 		default:
 			break;
+		}
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
+		if(requestCode==OnSetAvatarListener.REQUEST_CROP_PHOTO){
+			registerAppSever();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

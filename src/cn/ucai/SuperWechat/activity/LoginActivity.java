@@ -51,6 +51,7 @@ import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.domain.User;
 import cn.ucai.SuperWechat.task.DownAllContact;
+import cn.ucai.SuperWechat.task.DownAllGroup;
 import cn.ucai.SuperWechat.utils.CommonUtils;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.Utils;
@@ -246,6 +247,7 @@ public class LoginActivity extends BaseActivity {
 		SuperWeChatApplication.getInstance().setUserAvatar(user);
 		SuperWeChatApplication.currentUserNick=user.getMUserNick();
 		new DownAllContact(LoginActivity.this).exec(currentUsername);
+		new DownAllGroup(LoginActivity.this).exec(currentUsername);
 
 
 		try {

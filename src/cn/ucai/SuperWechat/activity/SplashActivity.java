@@ -20,6 +20,7 @@ import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
 import cn.ucai.SuperWechat.task.DownAllContact;
+import cn.ucai.SuperWechat.task.DownAllGroup;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.Utils;
 import cn.ucai.SuperWechat.widget.I;
@@ -98,6 +99,8 @@ public class SplashActivity extends BaseActivity {
 						SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
 					}
 					new DownAllContact(SplashActivity.this).exec(userName);
+					new DownAllGroup(SplashActivity.this).exec(userName);
+
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {

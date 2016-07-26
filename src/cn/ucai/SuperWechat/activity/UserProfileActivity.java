@@ -163,7 +163,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 
 	}
-	private void registerAppSever() {
+	private void updateAppAvatar() {
 		File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
 				I.AVATAR_TYPE_USER_PATH),SuperWeChatApplication.getInstance().getUserName()+I.AVATAR_SUFFIX_JPG);
 		OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
@@ -176,6 +176,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					@Override
 					public void onSuccess(Result result) {
 						if(result.isRetMsg()) {
+							dialog.dismiss();
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success), Toast.LENGTH_SHORT)
 									.show();
 						}
@@ -183,7 +184,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 					@Override
 					public void onError(String error) {
-
+						dialog.dismiss();
 					}
 				});
 
@@ -296,7 +297,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
 		if(requestCode==OnSetAvatarListener.REQUEST_CROP_PHOTO){
-			registerAppSever();
+			dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+			updateAppAvatar();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

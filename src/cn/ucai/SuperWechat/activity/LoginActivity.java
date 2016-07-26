@@ -13,6 +13,7 @@
  */
 package cn.ucai.SuperWechat.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -35,6 +37,9 @@ import com.easemob.EMCallBack;
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.squareup.okhttp.internal.Util;
 
 import cn.ucai.SuperWechat.Constant;
@@ -183,6 +188,7 @@ public class LoginActivity extends BaseActivity {
 					@Override
 					public void onSuccess(String s) {
 						if(s!=null){
+							UpdateUserAvatar();
 							Result result = Utils.getResultFromJson(s, UserAvatar.class);
 							UserAvatar retData = (UserAvatar) result.getRetData();
 							saveMyDB(retData);
@@ -200,6 +206,27 @@ public class LoginActivity extends BaseActivity {
 						pd.dismiss();
 						Toast.makeText(getApplicationContext(), getString(R.string.Login_failed) + error,
 								Toast.LENGTH_SHORT).show();
+					}
+				});
+	}
+
+	private void UpdateUserAvatar() {
+		final OkHttpUtils2<Message> utils = new OkHttpUtils2<Message>();
+		utils.setRequestUrl(I.REQUEST_DOWNLOAD_AVATAR)
+				.addParam(I.NAME_OR_HXID,currentUsername)
+				.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+				.targetClass(Message.class)
+				.doInBackground(new Callback() {
+					@Override
+					public void onFailure(Request request, IOException e) {
+
+					}
+
+					@Override
+					public void onResponse(Response response) throws IOException {
+						byte[] bytes = response.body().bytes();
+						final String avatarUrl = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().uploadUserAvatar(bytes);
+
 					}
 				});
 	}

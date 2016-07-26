@@ -96,7 +96,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		if (username == null||username.equals(EMChatManager.getInstance().getCurrentUser())) {
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setAppCurrentUserNick(tvNickName);
-			UserUtils.setAppUserAvatar(this,EMChatManager.getInstance().getCurrentUser(),headAvatar);
+			UserUtils.setCurrentUserAvatar(this,headAvatar);
 		}else {
 			tvUsername.setText(username);
 			UserUtils.setAppUserNick(username, tvNickName);
@@ -163,7 +163,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 
 	}
-	private void updateAppAvatar() {
+	private void updateAppAvatar(final Intent data) {
 		File file = new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
 				I.AVATAR_TYPE_USER_PATH),SuperWeChatApplication.getInstance().getUserName()+I.AVATAR_SUFFIX_JPG);
 		OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
@@ -176,6 +176,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					@Override
 					public void onSuccess(Result result) {
 						if(result.isRetMsg()) {
+							setPicToView(data);
 							dialog.dismiss();
 							Toast.makeText(UserProfileActivity.this, getString(R.string.toast_updatephoto_success), Toast.LENGTH_SHORT)
 									.show();
@@ -243,7 +244,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	
 
 	private void updateRemoteNick(final String nickName) {
-		dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
+		//dialog = ProgressDialog.show(this, getString(R.string.dl_update_nick), getString(R.string.dl_waiting));
 		new Thread(new Runnable() {
 
 			@Override
@@ -298,7 +299,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
 		if(requestCode==OnSetAvatarListener.REQUEST_CROP_PHOTO){
 			dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
-			updateAppAvatar();
+			updateAppAvatar(data);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

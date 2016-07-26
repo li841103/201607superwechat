@@ -155,7 +155,7 @@ public class NewGroupActivity extends BaseActivity {
         }).start();
 	}
 
-	private void createMyGroup(String groupId, String groupName, String desc, String[] members) {
+	private void createMyGroup(String groupId, String groupName, String desc, final String[] members) {
 		//http://127.0.0.1:8080/SuperWeChatServer/Server?request=
 		// create_group&m_group_hxid=&m_group_name=&m_group_description=&m_group_owner=
 		// &m_group_is_public=&m_group_allow_invites=
@@ -179,6 +179,41 @@ public class NewGroupActivity extends BaseActivity {
 					public void onSuccess(String s) {
 						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 						if(result!=null&&result.isRetMsg()){
+							if(members!=null&&members.length>0){
+								addGroupMembers(result,members);
+							}
+
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						progressDialog.dismiss();
+						//Toast.makeText(NewGroupActivity.this, st2+error, Toast.LENGTH_LONG).show();
+						Log.e("main", "error=" + error);
+					}
+				});
+	}
+//http://127.0.0.1:8080/SuperWeChatServer/Server?request=
+// add_group_members&m_member_user_id=&m_member_user_name=&m_member_group_hxid=
+
+	private void addGroupMembers(Result result,String[] members) {
+		GroupAvatar groupavatar = (GroupAvatar) result.getRetData();
+		StringBuilder sb = new StringBuilder();
+		for(String s:members){
+			sb.append(s).append(",");
+		}
+		sb.substring(0,sb.length()-1);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+				.addParam(I.Member.USER_NAME,sb.toString())
+				.addParam(I.Member.GROUP_HX_ID,groupavatar.getMGroupHxid())
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if(result!=null&&result.isRetMsg()) {
 							runOnUiThread(new Runnable() {
 								public void run() {
 									progressDialog.dismiss();
@@ -187,6 +222,7 @@ public class NewGroupActivity extends BaseActivity {
 								}
 							});
 						}
+
 					}
 
 					@Override

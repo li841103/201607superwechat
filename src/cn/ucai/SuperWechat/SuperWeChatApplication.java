@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.ucai.SuperWechat.bean.GroupAvatar;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -30,9 +31,17 @@ public class SuperWeChatApplication extends Application {
 	public SuperWeChatApplication() {
 	}
 
-	private List<UserAvatar> userAvatars = new ArrayList<UserAvatar>();
+	public List<UserAvatar> userAvatars = new ArrayList<UserAvatar>();
 	private Map<String, UserAvatar> stringUserAvatarMap = new HashMap<String, UserAvatar>();
+	private List<GroupAvatar> GroupList = new ArrayList<GroupAvatar>();
 
+	public List<GroupAvatar> getGroupList() {
+		return GroupList;
+	}
+
+	public void setGroupList(List<GroupAvatar> groupList) {
+		GroupList = groupList;
+	}
 
 	public Map<String, UserAvatar> getStringUserAvatarMap() {
 		return stringUserAvatarMap;
@@ -51,10 +60,21 @@ public class SuperWeChatApplication extends Application {
 	// login user name
 	public final String PREF_USERNAME = "username";
 	private UserAvatar userAvatar;
+
+	public static void setCurrentUserNick(String currentUserNick) {
+		SuperWeChatApplication.currentUserNick = currentUserNick;
+	}
+
 	/**
+
 	 * 当前用户nickname,为了苹果推送不是userid而是昵称
 	 */
 	public static String currentUserNick = "";
+
+	public static String getCurrentUserNick() {
+		return currentUserNick;
+	}
+
 	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
 
 	@Override
@@ -126,8 +146,13 @@ public class SuperWeChatApplication extends Application {
 	    hxSDKHelper.setPassword(pwd);
 	}
 
+	public UserAvatar getUserAvatar() {
+		return userAvatar;
+	}
+
 	public void setUserAvatar(UserAvatar userAvatar) {
 		this.userAvatar = userAvatar;
+
 	}
 
 	/**
@@ -138,6 +163,9 @@ public class SuperWeChatApplication extends Application {
 	    hxSDKHelper.logout(isGCM,emCallBack);
 	}
 
+	public List<UserAvatar> getUserAvatars() {
+		return userAvatars;
+	}
 
 	public void setUserAvatars(List<UserAvatar> userAvatars) {
 		this.userAvatars = userAvatars;

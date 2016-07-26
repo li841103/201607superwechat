@@ -78,6 +78,17 @@ public class UserUtils {
 		}
 	}
 
+	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
+		String user=hxid;
+		String path =getUserAvatarPath(user);
+		if(user != null&&path!=null){
+			path = UserUtils.getUserAvatarPath(user);
+			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+		}else{
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
+
 	public static String getUserAvatarPath(String username){
 		StringBuilder sb = new StringBuilder();
 		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)

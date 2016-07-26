@@ -82,12 +82,27 @@ public class UserUtils {
 		String user=hxid;
 		String path =getUserAvatarPath(user);
 		if(user != null&&path!=null){
-			path = UserUtils.getUserAvatarPath(user);
-			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+			path = UserUtils.getGroupAvatarPath(user);
+			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
 		}else{
-			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
 		}
 	}
+
+	public static String getGroupAvatarPath(String hxid){
+		StringBuilder sb = new StringBuilder();
+		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)
+				.append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.ALT).append(I.NAME_OR_HXID)
+				.append(I.EQUAL).append(hxid)
+				.append(I.ALT).append(I.AVATAR_TYPE)
+				.append(I.EQUAL)
+				.append(I.AVATAR_TYPE_GROUP_PATH);
+
+		Log.i("main", sb.toString());
+		return sb.toString();
+	}
+
 
 	public static String getUserAvatarPath(String username){
 		StringBuilder sb = new StringBuilder();

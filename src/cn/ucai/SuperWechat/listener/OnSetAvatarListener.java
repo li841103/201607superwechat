@@ -195,7 +195,11 @@ public class OnSetAvatarListener implements View.OnClickListener {
     private void saveCropAndShowAvatar(ImageView ivAvatar, Intent data) {
         Bundle extras = data.getExtras();
         Bitmap avatar = extras.getParcelable("data");
+        if(ivAvatar==null){
+            Log.i("main", "ivAvatar==null");
+        }
         if (avatar == null) {
+            Log.i("main", "avatar==null");
             return;
         }
         ivAvatar.setImageBitmap(avatar);

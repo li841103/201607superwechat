@@ -383,4 +383,12 @@ public class DemoDBManager {
     }
 
 
+    synchronized public void updatenick(UserAvatar retData) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        if (db.isOpen()) {
+            ContentValues values = new ContentValues();
+            values.put(UserDao.SUPERWECHAT_COLUMN_NAME_NICK,retData.getMUserNick());
+            db.update(UserDao.SUPERWECHAT_TABLE_NAME, values, UserDao.SUPERWECHAT_COLUMN_NAME_ID + " = ?", new String[]{retData.getMUserName()});
+        }
+    }
 }

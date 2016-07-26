@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/layout_ll">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -72,6 +73,7 @@
         android:paddingTop="5dp"
         android:textSize="18sp" />
     <RelativeLayout
+        android:id="@+id/layout_rl"
         android:layout_width="match_parent"
         android:layout_height="39dp"
         android:layout_marginBottom="10dp"
@@ -79,7 +81,7 @@
         android:layout_marginRight="10dp"
         android:background="#fff" >
         <ImageView
-            android:id="@+id/iv_touxiang"
+            android:id="@+id/Icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

@@ -289,6 +289,7 @@ public class ContactlistFragment extends Fragment {
 			try {
                 // 删除此联系人
                 deleteContact(toBeProcessUser);
+
                 // 删除相关的邀请消息
                 InviteMessgeDao dao = new InviteMessgeDao(getActivity());
                 dao.deleteMessage(toBeProcessUser.getUsername());
@@ -360,6 +361,7 @@ public class ContactlistFragment extends Fragment {
 
 			}
 		}).start();
+
 
 	}
 

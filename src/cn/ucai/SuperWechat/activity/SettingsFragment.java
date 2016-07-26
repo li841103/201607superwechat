@@ -30,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
+
+import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMChatOptions;
@@ -356,6 +358,10 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 			public void onSuccess() {
 				getActivity().runOnUiThread(new Runnable() {
 					public void run() {
+						SuperWeChatApplication.getInstance().getStringUserAvatarMap().clear();
+						SuperWeChatApplication.getInstance().getUserAvatars().clear();
+						SuperWeChatApplication.getInstance().getGroupList().clear();
+						SuperWeChatApplication.getInstance().setUserAvatar(null);
 						pd.dismiss();
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();

@@ -44,7 +44,26 @@ public class SuperWeChatApplication extends Application {
 
 	public List<UserAvatar> userAvatars = new ArrayList<UserAvatar>();
 	private Map<String, UserAvatar> stringUserAvatarMap = new HashMap<String, UserAvatar>();
+	private Map<String, GroupAvatar> GroupMap = new HashMap<String, GroupAvatar>();
+
+	public Map<String, GroupAvatar> getGroupMap() {
+		return GroupMap;
+	}
+
+	public void setGroupMap(Map<String, GroupAvatar> groupMap) {
+		GroupMap = groupMap;
+	}
+
 	private List<GroupAvatar> GroupList = new ArrayList<GroupAvatar>();
+	private List<GroupAvatar> GroupDeleteList = new ArrayList<GroupAvatar>();
+
+	public List<GroupAvatar> getGroupDeleteList() {
+		return GroupDeleteList;
+	}
+
+	public void setGroupDeleteList(List<GroupAvatar> groupDeleteList) {
+		GroupDeleteList = groupDeleteList;
+	}
 
 	public List<GroupAvatar> getGroupList() {
 		return GroupList;

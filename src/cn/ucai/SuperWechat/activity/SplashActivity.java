@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,8 +18,8 @@ import cn.ucai.SuperWechat.SuperWeChatApplication;
 import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 import cn.ucai.SuperWechat.db.UserDao;
-import cn.ucai.SuperWechat.task.DownAllContact;
 import cn.ucai.SuperWechat.task.DownAllGroup;
+import cn.ucai.SuperWechat.task.DownAllContact;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.Utils;
 import cn.ucai.SuperWechat.widget.I;
@@ -98,8 +97,8 @@ public class SplashActivity extends BaseActivity {
 						SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
 						SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
 					}
-					new DownAllContact(SplashActivity.this).exec(userName);
 					new DownAllGroup(SplashActivity.this).exec(userName);
+					new DownAllContact(SplashActivity.this).exec(userName);
 
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长

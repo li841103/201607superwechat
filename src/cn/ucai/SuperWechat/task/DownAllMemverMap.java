@@ -39,7 +39,7 @@ public class DownAllMemverMap {
                 .addParam(I.Member.GROUP_HX_ID,hxid)
                 .targetClass(String.class)
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
-                   
+
                     // I.SERVER_URL + "?request=download_group_members_by_hxid&m_member_group_hxid=" + hxId;
                     @Override
                     public void onSuccess(String s) {

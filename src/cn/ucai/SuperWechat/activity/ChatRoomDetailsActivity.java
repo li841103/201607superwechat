@@ -257,6 +257,7 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 				}
 			}
 		}).start();
+
 	}
 	
 	protected void updateRoom() {
@@ -481,5 +482,7 @@ public class ChatRoomDetailsActivity extends BaseActivity implements OnClickList
 	    TextView textView;
 	    ImageView badgeDeleteView;
 	}
+
+
 
 }

@@ -14,7 +14,9 @@
 package cn.ucai.SuperWechat.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,8 +45,17 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.SuperWeChatApplication;
+import cn.ucai.SuperWechat.bean.GroupAvatar;
+import cn.ucai.SuperWechat.bean.MemberUserAvatar;
+import cn.ucai.SuperWechat.bean.Result;
+import cn.ucai.SuperWechat.bean.UserAvatar;
+import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.UserUtils;
+import cn.ucai.SuperWechat.utils.Utils;
 import cn.ucai.SuperWechat.widget.ExpandGridView;
+import cn.ucai.SuperWechat.widget.I;
+
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
 import com.easemob.util.NetUtils;
@@ -393,6 +405,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+
+
 	}
 
 	/**
@@ -431,6 +445,43 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		Log.i("main", "memberArsssssssr=");
+		addMembers(groupId,newmembers);
+	}
+	private void addMembers(String hxid,String[] members) {
+		StringBuilder sb = new StringBuilder();
+		for(String s:members){
+			sb.append(s).append(",");
+		}
+		sb.substring(0,sb.length()-1);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+				.addParam(I.Member.USER_NAME,sb.toString())
+				.addParam(I.Member.GROUP_HX_ID,hxid)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if(result!=null&&result.isRetMsg()) {
+							runOnUiThread(new Runnable() {
+								public void run() {
+									progressDialog.dismiss();
+									setResult(RESULT_OK);
+									finish();
+								}
+							});
+						}
+
+					}
+
+					@Override
+					public void onError(String error) {
+						progressDialog.dismiss();
+						//Toast.makeText(NewGroupActivity.this, st2+error, Toast.LENGTH_LONG).show();
+						Log.e("main", "error=" + error);
+					}
+				});
 	}
 
 	@Override
@@ -706,6 +757,9 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 							}
 						}).start();
+						boolean isExit = true;
+					deleteMembersFromAppGroup(username,isExit);
+
 					}
 				});
 
@@ -733,6 +787,10 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		public int getCount() {
 			return super.getCount() + 2;
 		}
+	}
+
+	private void deleteMembersFromAppGroup(String username, boolean isExit) {
+		//SuperWeChatApplication.getInstance().
 	}
 
 	protected void updateGroup() {

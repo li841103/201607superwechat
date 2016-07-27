@@ -19,8 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -50,6 +52,7 @@ import cn.ucai.SuperWechat.bean.GroupAvatar;
 import cn.ucai.SuperWechat.bean.MemberUserAvatar;
 import cn.ucai.SuperWechat.bean.Result;
 import cn.ucai.SuperWechat.bean.UserAvatar;
+import cn.ucai.SuperWechat.task.DownAllMemverMap;
 import cn.ucai.SuperWechat.utils.OkHttpUtils2;
 import cn.ucai.SuperWechat.utils.UserUtils;
 import cn.ucai.SuperWechat.utils.Utils;
@@ -190,7 +193,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 		clearAllHistory.setOnClickListener(this);
 		blacklistLayout.setOnClickListener(this);
 		changeGroupNameLayout.setOnClickListener(this);
-
+		setUpdateMemberListener();
 	}
 
 	@Override
@@ -464,6 +467,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					public void onSuccess(String s) {
 						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 						if(result!=null&&result.isRetMsg()) {
+							new DownAllMemverMap(getApplication(),groupId).exec(groupId);
 							runOnUiThread(new Runnable() {
 								public void run() {
 									progressDialog.dismiss();
@@ -855,12 +859,29 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	protected void onDestroy() {
 		super.onDestroy();
 		instance = null;
+		if(mReveiver!=null){
+			unregisterReceiver(mReveiver);
+		}
 	}
 	
 	private static class ViewHolder{
 	    ImageView imageView;
 	    TextView textView;
 	    ImageView badgeDeleteView;
+	}
+
+	class UpdateMemberReceiver extends BroadcastReceiver{
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			refreshMembers();
+		}
+	}
+	UpdateMemberReceiver mReveiver;
+	private void setUpdateMemberListener(){
+		mReveiver = new UpdateMemberReceiver();
+		IntentFilter filter = new IntentFilter("update_member_list");
+		registerReceiver(mReveiver, filter);
 	}
 
 }

@@ -82,6 +82,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	
 	private void initListener() {
 		Intent intent = getIntent();
+		String hxid = intent.getStringExtra("groupId");
 		String username = intent.getStringExtra("username");
 		boolean enableUpdate = intent.getBooleanExtra("setting", false);
 		if (enableUpdate) {
@@ -97,6 +98,10 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setAppCurrentUserNick(tvNickName);
 			UserUtils.setCurrentUserAvatar(this,headAvatar);
+		}else if(hxid!=null){
+			tvUsername.setText(username);
+			UserUtils.setAppMemberNick(hxid, username, tvNickName);
+			UserUtils.setAppUserAvatar(this, username, headAvatar);
 		}else {
 			tvUsername.setText(username);
 			UserUtils.setAppUserNick(username, tvNickName);

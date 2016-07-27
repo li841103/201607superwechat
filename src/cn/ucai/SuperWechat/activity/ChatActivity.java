@@ -22,8 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -95,6 +97,7 @@ import cn.ucai.SuperWechat.adapter.ExpressionPagerAdapter;
 import cn.ucai.SuperWechat.adapter.MessageAdapter;
 import cn.ucai.SuperWechat.adapter.VoicePlayClickListener;
 import cn.ucai.SuperWechat.domain.RobotUser;
+import cn.ucai.SuperWechat.task.DownAllMemverMap;
 import cn.ucai.SuperWechat.utils.CommonUtils;
 import cn.ucai.SuperWechat.utils.ImageUtils;
 import cn.ucai.SuperWechat.utils.SmileUtils;
@@ -516,8 +519,8 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-        
-        // 监听当前会话的群聊解散被T事件
+		new DownAllMemverMap(getApplicationContext(),toChatUsername);
+		// 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
         EMGroupManager.getInstance().addGroupChangeListener(groupListener);
 	}
@@ -1469,6 +1472,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		if(groupListener != null){
 		    EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
 		}
+		if(mReceiver!=null){
+			unregisterReceiver(mReceiver);
+		}
 	}
 
 	@Override
@@ -1753,4 +1759,16 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		return listView;
 	}
 
+    class UpdateMemberListener extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+    UpdateMemberListener mReceiver;
+    private void setUpdateMemberListener(){
+        mReceiver = new UpdateMemberListener();
+        IntentFilter filter = new IntentFilter("update_member_list");
+        registerReceiver(mReceiver, filter);
+    }
 }

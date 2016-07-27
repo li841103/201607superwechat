@@ -24,11 +24,22 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.SuperWechat.bean.GroupAvatar;
+import cn.ucai.SuperWechat.bean.MemberUserAvatar;
 import cn.ucai.SuperWechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
 
 	public SuperWeChatApplication() {
+	}
+
+	public Map<String, HashMap<String, MemberUserAvatar>> MemberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
+
+	public Map<String, HashMap<String, MemberUserAvatar>> getMemberMap() {
+		return MemberMap;
+	}
+
+	public void setMemberMap(Map<String, HashMap<String, MemberUserAvatar>> memberMap) {
+		MemberMap = memberMap;
 	}
 
 	public List<UserAvatar> userAvatars = new ArrayList<UserAvatar>();

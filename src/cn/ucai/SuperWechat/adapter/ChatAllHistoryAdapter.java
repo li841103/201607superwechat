@@ -51,7 +51,6 @@ import com.easemob.util.EMLog;
 
 /**
  * 显示所有聊天记录adpater
- * 
  */
 public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 
@@ -60,11 +59,13 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	private List<EMConversation> conversationList;
 	private List<EMConversation> copyConversationList;
 	private ConversationFilter conversationFilter;
-    private boolean notiyfyByFilter;
+	private boolean notiyfyByFilter;
+	private Context context;
 
 	public ChatAllHistoryAdapter(Context context, int textViewResourceId, List<EMConversation> objects) {
 		super(context, textViewResourceId, objects);
 		this.conversationList = objects;
+		this.context = context;
 		copyConversationList = new ArrayList<EMConversation>();
 		copyConversationList.addAll(objects);
 		inflater = LayoutInflater.from(context);
@@ -99,30 +100,31 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		String username = conversation.getUserName();
 		if (conversation.getType() == EMConversationType.GroupChat) {
 			// 群聊消息，显示群聊头像
-			holder.avatar.setImageResource(R.drawable.group_icon);
+			//holder.avatar.setImageResource(R.drawable.group_icon);
+			UserUtils.setAppGroupAvatar(context, username, (ImageView) convertView.findViewById(R.id.avatar));
 			EMGroup group = EMGroupManager.getInstance().getGroup(username);
 			holder.name.setText(group != null ? group.getGroupName() : username);
-		} else if(conversation.getType() == EMConversationType.ChatRoom){
-		    holder.avatar.setImageResource(R.drawable.group_icon);
-            EMChatRoom room = EMChatManager.getInstance().getChatRoom(username);
-            holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
-		}else {
-		    UserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
+		} else if (conversation.getType() == EMConversationType.ChatRoom) {
+			holder.avatar.setImageResource(R.drawable.group_icon);
+			EMChatRoom room = EMChatManager.getInstance().getChatRoom(username);
+			holder.name.setText(room != null && !TextUtils.isEmpty(room.getName()) ? room.getName() : username);
+		} else {
+			UserUtils.setAppUserAvatar(getContext(), username, holder.avatar);
 			if (username.equals(Constant.GROUP_USERNAME)) {
 				holder.name.setText("群聊");
 
 			} else if (username.equals(Constant.NEW_FRIENDS_USERNAME)) {
 				holder.name.setText("申请与通知");
 			}
-			Map<String,RobotUser> robotMap=((DemoHXSDKHelper)HXSDKHelper.getInstance()).getRobotList();
-			if(robotMap!=null&&robotMap.containsKey(username)){
+			Map<String, RobotUser> robotMap = ((DemoHXSDKHelper) HXSDKHelper.getInstance()).getRobotList();
+			if (robotMap != null && robotMap.containsKey(username)) {
 				String nick = robotMap.get(username).getNick();
-				if(!TextUtils.isEmpty(nick)){
+				if (!TextUtils.isEmpty(nick)) {
 					holder.name.setText(nick);
-				}else{
+				} else {
 					holder.name.setText(username);
 				}
-			}else{
+			} else {
 				UserUtils.setAppUserNick(username, holder.name);
 			}
 		}
@@ -154,7 +156,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 
 	/**
 	 * 根据消息内容和消息类型获取消息内容提示
-	 * 
+	 *
 	 * @param message
 	 * @param context
 	 * @return
@@ -162,67 +164,81 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	private String getMessageDigest(EMMessage message, Context context) {
 		String digest = "";
 		switch (message.getType()) {
-		case LOCATION: // 位置消息
-			if (message.direct == EMMessage.Direct.RECEIVE) {
-				// 从sdk中提到了ui中，使用更简单不犯错的获取string的方法
-				// digest = EasyUtils.getAppResourceString(context,
-				// "location_recv");
-				digest = getStrng(context, R.string.location_recv);
-				digest = String.format(digest, message.getFrom());
-				return digest;
-			} else {
-				// digest = EasyUtils.getAppResourceString(context,
-				// "location_prefix");
-				digest = getStrng(context, R.string.location_prefix);
-			}
-			break;
-		case IMAGE: // 图片消息
-			ImageMessageBody imageBody = (ImageMessageBody) message.getBody();
-			digest = getStrng(context, R.string.picture) + imageBody.getFileName();
-			break;
-		case VOICE:// 语音消息
-			digest = getStrng(context, R.string.voice);
-			break;
-		case VIDEO: // 视频消息
-			digest = getStrng(context, R.string.video);
-			break;
-		case TXT: // 文本消息
-			
-			if(((DemoHXSDKHelper)HXSDKHelper.getInstance()).isRobotMenuMessage(message)){
-				digest = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getRobotMenuMessageDigest(message);
-			}else if(message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL,false)){
-				TextMessageBody txtBody = (TextMessageBody) message.getBody();
-				digest = getStrng(context, R.string.voice_call) + txtBody.getMessage();
-			}else{
-				TextMessageBody txtBody = (TextMessageBody) message.getBody();
-				digest = txtBody.getMessage();
-			}
-			break;
-		case FILE: // 普通文件消息
-			digest = getStrng(context, R.string.file);
-			break;
-		default:
-			EMLog.e(TAG, "unknow type");
-			return "";
+			case LOCATION: // 位置消息
+				if (message.direct == EMMessage.Direct.RECEIVE) {
+					// 从sdk中提到了ui中，使用更简单不犯错的获取string的方法
+					// digest = EasyUtils.getAppResourceString(context,
+					// "location_recv");
+					digest = getStrng(context, R.string.location_recv);
+					digest = String.format(digest, message.getFrom());
+					return digest;
+				} else {
+					// digest = EasyUtils.getAppResourceString(context,
+					// "location_prefix");
+					digest = getStrng(context, R.string.location_prefix);
+				}
+				break;
+			case IMAGE: // 图片消息
+				ImageMessageBody imageBody = (ImageMessageBody) message.getBody();
+				digest = getStrng(context, R.string.picture) + imageBody.getFileName();
+				break;
+			case VOICE:// 语音消息
+				digest = getStrng(context, R.string.voice);
+				break;
+			case VIDEO: // 视频消息
+				digest = getStrng(context, R.string.video);
+				break;
+			case TXT: // 文本消息
+
+				if (((DemoHXSDKHelper) HXSDKHelper.getInstance()).isRobotMenuMessage(message)) {
+					digest = ((DemoHXSDKHelper) HXSDKHelper.getInstance()).getRobotMenuMessageDigest(message);
+				} else if (message.getBooleanAttribute(Constant.MESSAGE_ATTR_IS_VOICE_CALL, false)) {
+					TextMessageBody txtBody = (TextMessageBody) message.getBody();
+					digest = getStrng(context, R.string.voice_call) + txtBody.getMessage();
+				} else {
+					TextMessageBody txtBody = (TextMessageBody) message.getBody();
+					digest = txtBody.getMessage();
+				}
+				break;
+			case FILE: // 普通文件消息
+				digest = getStrng(context, R.string.file);
+				break;
+			default:
+				EMLog.e(TAG, "unknow type");
+				return "";
 		}
 
 		return digest;
 	}
 
 	private static class ViewHolder {
-		/** 和谁的聊天记录 */
+		/**
+		 * 和谁的聊天记录
+		 */
 		TextView name;
-		/** 消息未读数 */
+		/**
+		 * 消息未读数
+		 */
 		TextView unreadLabel;
-		/** 最后一条消息的内容 */
+		/**
+		 * 最后一条消息的内容
+		 */
 		TextView message;
-		/** 最后一条消息的时间 */
+		/**
+		 * 最后一条消息的时间
+		 */
 		TextView time;
-		/** 用户头像 */
+		/**
+		 * 用户头像
+		 */
 		ImageView avatar;
-		/** 最后一条消息的发送状态 */
+		/**
+		 * 最后一条消息的发送状态
+		 */
 		View msgState;
-		/** 整个list中每一行总布局 */
+		/**
+		 * 整个list中每一行总布局
+		 */
 		RelativeLayout list_item_layout;
 
 	}
@@ -230,8 +246,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 	String getStrng(Context context, int resId) {
 		return context.getResources().getString(resId);
 	}
-	
-	
+
 
 	@Override
 	public Filter getFilter() {
@@ -240,7 +255,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 		return conversationFilter;
 	}
-	
+
 	private class ConversationFilter extends Filter {
 		List<EMConversation> mOriginalValues = null;
 
@@ -266,26 +281,26 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 				for (int i = 0; i < count; i++) {
 					final EMConversation value = mOriginalValues.get(i);
 					String username = value.getUserName();
-					
+
 					EMGroup group = EMGroupManager.getInstance().getGroup(username);
-					if(group != null){
+					if (group != null) {
 						username = group.getGroupName();
 					}
 
 					// First match against the whole ,non-splitted value
 					if (username.startsWith(prefixString)) {
 						newValues.add(value);
-					} else{
-						  final String[] words = username.split(" ");
-	                        final int wordCount = words.length;
+					} else {
+						final String[] words = username.split(" ");
+						final int wordCount = words.length;
 
-	                        // Start at index 0, in case valueText starts with space(s)
-	                        for (int k = 0; k < wordCount; k++) {
-	                            if (words[k].startsWith(prefixString)) {
-	                                newValues.add(value);
-	                                break;
-	                            }
-	                        }
+						// Start at index 0, in case valueText starts with space(s)
+						for (int k = 0; k < wordCount; k++) {
+							if (words[k].startsWith(prefixString)) {
+								newValues.add(value);
+								break;
+							}
+						}
 					}
 				}
 
@@ -300,7 +315,7 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 			conversationList.clear();
 			conversationList.addAll((List<EMConversation>) results.values);
 			if (results.count > 0) {
-			    notiyfyByFilter = true;
+				notiyfyByFilter = true;
 				notifyDataSetChanged();
 			} else {
 				notifyDataSetInvalidated();
@@ -309,14 +324,14 @@ public class ChatAllHistoryAdapter extends ArrayAdapter<EMConversation> {
 		}
 
 	}
-	
+
 	@Override
 	public void notifyDataSetChanged() {
-	    super.notifyDataSetChanged();
-	    if(!notiyfyByFilter){
-            copyConversationList.clear();
-            copyConversationList.addAll(conversationList);
-            notiyfyByFilter = false;
-        }
+		super.notifyDataSetChanged();
+		if (!notiyfyByFilter) {
+			copyConversationList.clear();
+			copyConversationList.addAll(conversationList);
+			notiyfyByFilter = false;
+		}
 	}
 }

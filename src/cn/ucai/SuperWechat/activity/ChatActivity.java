@@ -46,6 +46,7 @@ import android.text.ClipboardManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -519,8 +520,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-		new DownAllMemverMap(getApplicationContext(),toChatUsername);
-		// 监听当前会话的群聊解散被T事件
+        new DownAllMemverMap(getApplicationContext(), toChatUsername).exec(toChatUsername);
+        Log.i("main", "这个时候执行过了下载群组所有好友");
+        // 监听当前会话的群聊解散被T事件
         groupListener = new GroupListener();
         EMGroupManager.getInstance().addGroupChangeListener(groupListener);
 	}

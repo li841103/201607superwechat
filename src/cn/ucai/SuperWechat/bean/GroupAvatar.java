@@ -11,6 +11,23 @@ public class GroupAvatar implements Serializable{
 	private Integer mgroupId;
 	private String mgroupHxid;
 	private String mgroupName;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof GroupAvatar)) return false;
+
+		GroupAvatar that = (GroupAvatar) o;
+
+		return mgroupHxid.equals(that.mgroupHxid);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return mgroupHxid.hashCode();
+	}
+
 	private String mgroupDescription;
 	private String mgroupOwner;
 	private String mgroupLastModifiedTime;

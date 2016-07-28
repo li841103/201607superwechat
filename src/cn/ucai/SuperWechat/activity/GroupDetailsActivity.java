@@ -62,6 +62,7 @@ import cn.ucai.SuperWechat.widget.I;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
 import com.easemob.util.NetUtils;
+import com.squareup.okhttp.internal.Util;
 
 public class GroupDetailsActivity extends BaseActivity implements OnClickListener {
 	private static final String TAG = "GroupDetailsActivity";
@@ -270,6 +271,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							}
 						}
 					}).start();
+					updateGroupName(returnData);
 				}
 				break;
 			case REQUEST_CODE_ADD_TO_BALCKLIST:
@@ -302,6 +304,32 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				break;
 			}
 		}
+	}
+
+	private void updateGroupName(String newName) {
+		Log.i("main", "newName=" + newName);
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_UPDATE_GROUP_NAME)
+				.addParam(I.Group.NAME,newName)
+				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if(result!=null&&result.isRetMsg()){
+							GroupAvatar group = (GroupAvatar) result.getRetData();
+							SuperWeChatApplication.getInstance().getGroupMap().put(groupId, group);
+							SuperWeChatApplication.getInstance().getGroupList().add(group);
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
 	}
 
 	private void refreshMembers(){

@@ -409,7 +409,28 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		deleteGroup();
 
+	}
+	private void deleteGroup(){
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_DELETE_GROUP)
+				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						if(result!=null&&result.isRetMsg()){
+							Log.i("main", "解散群组成功");
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "解散群组失败");
+					}
+				});
 
 	}
 

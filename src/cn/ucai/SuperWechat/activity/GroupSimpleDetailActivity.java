@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,9 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.utils.UserUtils;
+import cn.ucai.SuperWechat.utils.Utils;
+
 import com.easemob.exceptions.EaseMobException;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
@@ -37,6 +41,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 	private EMGroup group;
 	private String groupid;
 	private ProgressBar progressBar;
+	private ImageView avatar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 		btn_add_group = (Button) findViewById(R.id.btn_add_to_group);
 		tv_introduction = (TextView) findViewById(R.id.tv_introduction);
 		progressBar = (ProgressBar) findViewById(R.id.loading);
-
+		avatar = (ImageView) findViewById(R.id.avatar);
 		EMGroupInfo groupInfo = (EMGroupInfo) getIntent().getSerializableExtra("groupinfo");
 		String groupname = null;
 		if(groupInfo != null){
@@ -147,6 +152,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
          tv_name.setText(group.getGroupName());
          tv_admin.setText(group.getOwner());
          tv_introduction.setText(group.getDescription());
+		 UserUtils.setAppGroupAvatar(getApplicationContext(),groupid,avatar);
      }
 	
 	public void back(View view){

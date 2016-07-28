@@ -29,6 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -39,6 +40,8 @@ import com.easemob.chat.EMCursorResult;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.SuperWechat.R;
+import cn.ucai.SuperWechat.utils.UserUtils;
+
 import com.easemob.exceptions.EaseMobException;
 
 public class PublicGroupsActivity extends BaseActivity {
@@ -56,6 +59,7 @@ public class PublicGroupsActivity extends BaseActivity {
     private ProgressBar footLoadingPB;
     private TextView footLoadingText;
     private Button searchBtn;
+    private ImageView avatar;
     
 
 	@Override
@@ -63,7 +67,7 @@ public class PublicGroupsActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_public_groups);
 
-		pb = (ProgressBar) findViewById(R.id.progressBar);
+        pb = (ProgressBar) findViewById(R.id.progressBar);
 		listView = (ListView) findViewById(R.id.list);
 		groupsList = new ArrayList<EMGroupInfo>();
 		searchBtn = (Button) findViewById(R.id.btn_search);
@@ -189,7 +193,7 @@ public class PublicGroupsActivity extends BaseActivity {
 			}
 
 			((TextView) convertView.findViewById(R.id.name)).setText(getItem(position).getGroupName());
-
+            UserUtils.setAppGroupAvatar(getContext(),getItem(position).getGroupId(), (ImageView) convertView.findViewById(R.id.avatar));
 			return convertView;
 		}
 	}

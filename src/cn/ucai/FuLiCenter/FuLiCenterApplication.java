@@ -27,9 +27,9 @@ import cn.ucai.FuLiCenter.bean.GroupAvatar;
 import cn.ucai.FuLiCenter.bean.MemberUserAvatar;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 
-public class SuperWeChatApplication extends Application {
+public class FuLiCenterApplication extends Application {
 
-	public SuperWeChatApplication() {
+	public FuLiCenterApplication() {
 	}
 
 	public Map<String, HashMap<String, MemberUserAvatar>> MemberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
@@ -77,22 +77,22 @@ public class SuperWeChatApplication extends Application {
 		return stringUserAvatarMap;
 	}
 
-	public SuperWeChatApplication(Map<String, UserAvatar> stringUserAvatarMap) {
+	public FuLiCenterApplication(Map<String, UserAvatar> stringUserAvatarMap) {
 		this.stringUserAvatarMap = stringUserAvatarMap;
 
 	}
 
-	public SuperWeChatApplication(List<UserAvatar> userAvatars) {
+	public FuLiCenterApplication(List<UserAvatar> userAvatars) {
 		this.userAvatars = userAvatars;
 	}
 	public static Context applicationContext;
-	private static SuperWeChatApplication instance;
+	private static FuLiCenterApplication instance;
 	// login user name
 	public final String PREF_USERNAME = "username";
 	private UserAvatar userAvatar;
 
 	public static void setCurrentUserNick(String currentUserNick) {
-		SuperWeChatApplication.currentUserNick = currentUserNick;
+		FuLiCenterApplication.currentUserNick = currentUserNick;
 	}
 
 	/**
@@ -115,17 +115,17 @@ public class SuperWeChatApplication extends Application {
 
         /**
          * this function will initialize the HuanXin SDK
-         * 
+         *
          * @return boolean true if caller can continue to call HuanXin related APIs after calling onInit, otherwise false.
-         * 
+         *
          * 环信初始化SDK帮助函数
          * 返回true如果正确初始化，否则false，如果返回为false，请在后续的调用中不要调用任何和环信相关的代码
-         * 
+         *
          * for example:
          * 例子：
-         * 
+         *
          * public class DemoHXSDKHelper extends HXSDKHelper
-         * 
+         *
          * HXHelper = new DemoHXSDKHelper();
          * if(HXHelper.onInit(context)){
          *     // do HuanXin related work
@@ -134,7 +134,7 @@ public class SuperWeChatApplication extends Application {
         hxSDKHelper.onInit(applicationContext);
 	}
 
-	public static SuperWeChatApplication getInstance() {
+	public static FuLiCenterApplication getInstance() {
 		return instance;
 	}
  

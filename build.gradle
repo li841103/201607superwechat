@@ -17,10 +17,14 @@ dependencies {
 }
 
 android {
+    lintOptions{
+        checkReleaseBuilds false
+        abortOnError false
+    }
     compileSdkVersion 19
     buildToolsVersion "24.0.0"
     defaultConfig{
-        applicationId "cn.ucai.SuperWechat"
+        applicationId "cn.ucai.FuLiCenter"
     }
     sourceSets {
         main {

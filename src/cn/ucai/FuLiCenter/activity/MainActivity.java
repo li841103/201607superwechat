@@ -45,7 +45,7 @@ import com.easemob.EMGroupChangeListener;
 import com.easemob.EMNotifierEvent;
 import com.easemob.EMValueCallBack;
 
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMContactListener;
@@ -527,7 +527,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
 			Map<String, User> toAddUsers = new HashMap<String, User>();
 			List<String> toAddUserName = new ArrayList<String>();
-		    Map<String, UserAvatar> userMap = SuperWeChatApplication.getInstance().getStringUserAvatarMap();
+		    Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getStringUserAvatarMap();
 			for (String username : usernameList) {
 				User user = setUserHead(username);
 				// 添加好友时可能会回调added方法两次
@@ -543,7 +543,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			for(String name:toAddUserName){
 				final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 				utils.setRequestUrl(I.REQUEST_ADD_CONTACT)
-						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
 						.addParam(I.Contact.CU_NAME,name)
 						.targetClass(String.class)
 						.execute(new OkHttpUtils2.OnCompleteListener<String>() {
@@ -554,9 +554,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 									if(result!=null&&result.isRetMsg()){
 										UserAvatar user = (UserAvatar) result.getRetData();
 										if(user!=null){
-											if(!SuperWeChatApplication.getInstance().getStringUserAvatarMap().containsKey(user.getMUserName())){
-												SuperWeChatApplication.getInstance().getStringUserAvatarMap().put(user.getMUserName(),user);
-												SuperWeChatApplication.getInstance().getUserAvatars().add(user);
+											if(!FuLiCenterApplication.getInstance().getStringUserAvatarMap().containsKey(user.getMUserName())){
+												FuLiCenterApplication.getInstance().getStringUserAvatarMap().put(user.getMUserName(),user);
+												FuLiCenterApplication.getInstance().getUserAvatars().add(user);
 												sendStickyBroadcast(new Intent("update_contact_list"));
 											}
 										}
@@ -582,7 +582,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 			for (final String username : usernameList) {
 				final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
 				utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
-						.addParam(I.Contact.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+						.addParam(I.Contact.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
 						.addParam(I.Contact.CU_NAME,username)
 						.targetClass(Result.class)
 						.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
@@ -591,9 +591,9 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                                 if(s.isRetMsg()){
                                     Log.i("main", "weizhizhishiqi !");
                                     Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
-                                    UserAvatar u = SuperWeChatApplication.getInstance().getStringUserAvatarMap().get(username);
-                                    SuperWeChatApplication.getInstance().getStringUserAvatarMap().remove(username);
-                                    SuperWeChatApplication.getInstance().getUserAvatars().remove(u);
+                                    UserAvatar u = FuLiCenterApplication.getInstance().getStringUserAvatarMap().get(username);
+                                    FuLiCenterApplication.getInstance().getStringUserAvatarMap().remove(username);
+                                    FuLiCenterApplication.getInstance().getUserAvatars().remove(u);
                                     localUsers.remove(username);
                                     userDao.deleteContact(username);
                                     inviteMessgeDao.deleteMessage(username);

@@ -61,7 +61,7 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                             pd.dismiss();
                             containerLayout.setVisibility(View.VISIBLE);
                             nameText.setText(searchedGroup.getGroupName());
-                            UserUtils.setAppGroupAvatar(getApplicationContext(), searchedGroup.getGroupId(), avatar);
+                          //  UserUtils.setAppGroupAvatar(getApplicationContext(), searchedGroup.getGroupId(), avatar);
                         }
                     });
                     
@@ -73,9 +73,9 @@ public class PublicGroupsSeachActivity extends BaseActivity{
                             searchedGroup = null;
                             containerLayout.setVisibility(View.GONE);
                             if(e.getErrorCode() == EMError.GROUP_NOT_EXIST){
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_not_existed), 0).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_not_existed), Toast.LENGTH_SHORT).show();
                             }else{
-                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_search_failed) + " : " + getString(R.string.connect_failuer_toast), 0).show();
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.group_search_failed) + " : " + getString(R.string.connect_failuer_toast), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -90,7 +90,7 @@ public class PublicGroupsSeachActivity extends BaseActivity{
      * 点击搜索到的群组进入群组信息页面
      * @param view
      */
-    public void enterToDetails(View view){
-        startActivity(new Intent(this, GroupSimpleDetailActivity.class));
-    }
+//    public void enterToDetails(View view){
+//        startActivity(new Intent(this, GroupSimpleDetailActivity.class));
+//    }
 }

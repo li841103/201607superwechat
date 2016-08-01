@@ -26,12 +26,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import com.easemob.chat.EMContactManager;
 
 import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+
 import cn.ucai.FuLiCenter.applib.controller.HXSDKHelper;
 import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
@@ -83,12 +83,12 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", st));
 				return;
 			}
-			if(SuperWeChatApplication.getInstance().getUserName().equals(toAddUsername)){
+			if(FuLiCenterApplication.getInstance().getUserName().equals(toAddUsername)){
 				String str = getString(R.string.not_add_myself);
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
 				return;
 			}
-			UserAvatar userAvatar = SuperWeChatApplication.getInstance().getStringUserAvatarMap().get(toAddUsername);
+			UserAvatar userAvatar = FuLiCenterApplication.getInstance().getStringUserAvatarMap().get(toAddUsername);
 			if(userAvatar!=null){
 				startActivity(new Intent(AddContactActivity.this,UserProfileActivity.class).putExtra("username",toAddUsername));
 				return;
@@ -136,7 +136,7 @@ public class AddContactActivity extends BaseActivity{
 	 * @param view
 	 */
 	public void addContact(View view){
-		/*if(SuperWeChatApplication.getInstance().getUserName().equals(toAddUsername)){
+		/*if(FiLiCenterApplication.getInstance().getUserName().equals(toAddUsername)){
 			String str = getString(R.string.not_add_myself);
 			startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
 			return;

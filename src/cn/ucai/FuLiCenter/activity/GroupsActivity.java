@@ -35,14 +35,14 @@ import cn.ucai.FuLiCenter.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.FuLiCenter.R;
-import cn.ucai.FuLiCenter.adapter.GroupAdapter;
+
 import com.easemob.util.EMLog;
 
 public class GroupsActivity extends BaseActivity {
 	public static final String TAG = "GroupsActivity";
 	private ListView groupListView;
 	protected List<EMGroup> grouplist;
-	private GroupAdapter groupAdapter;
+
 	private InputMethodManager inputMethodManager;
 	public static GroupsActivity instance;
 	private SyncListener syncListener;
@@ -61,7 +61,7 @@ public class GroupsActivity extends BaseActivity {
 						handler.postDelayed(new Runnable() {
 							@Override
 							public void run() {
-								refresh();
+								//refresh();
 								progressBar.setVisibility(View.GONE);
 							}
 						}, 1000);
@@ -100,18 +100,16 @@ public class GroupsActivity extends BaseActivity {
 			}
 		});
 		
-		groupAdapter = new GroupAdapter(this, 1, grouplist);
-		groupListView.setAdapter(groupAdapter);
-		groupListView.setOnItemClickListener(new OnItemClickListener() {
+
+		/*groupListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (position == 1) {
 					// 新建群聊
-					startActivityForResult(new Intent(GroupsActivity.this, NewGroupActivity.class), 0);
 				} else if (position == 2) {
 					// 添加公开群
-					startActivityForResult(new Intent(GroupsActivity.this, PublicGroupsActivity.class), 0);
+					//startActivityForResult(new Intent(GroupsActivity.this, PublicGroupsActivity.class), 0);
 				} else {
 					// 进入群聊
 					Intent intent = new Intent(GroupsActivity.this, ChatActivity.class);
@@ -122,7 +120,7 @@ public class GroupsActivity extends BaseActivity {
 				}
 			}
 
-		});
+		});*/
 		groupListView.setOnTouchListener(new OnTouchListener() {
 
 			@Override
@@ -147,14 +145,14 @@ public class GroupsActivity extends BaseActivity {
 			progressBar.setVisibility(View.GONE);
 		}
 		
-		refresh();
+		//refresh();
 	}
 
 	/**
 	 * 进入公开群聊列表
 	 */
 	public void onPublicGroups(View view) {
-		startActivity(new Intent(this, PublicGroupsActivity.class));
+		//startActivity(new Intent(this, PublicGroupsActivity.class));
 	}
 
 	@Override
@@ -166,9 +164,9 @@ public class GroupsActivity extends BaseActivity {
 	public void onResume() {
 		super.onResume();
 		grouplist = EMGroupManager.getInstance().getAllGroups();
-		groupAdapter = new GroupAdapter(this, 1, grouplist);
+	/*	groupAdapter = new GroupAdapter(this, 1, grouplist);
 		groupListView.setAdapter(groupAdapter);
-		groupAdapter.notifyDataSetChanged();
+		groupAdapter.notifyDataSetChanged();*/
 	}
 
 	@Override
@@ -181,7 +179,7 @@ public class GroupsActivity extends BaseActivity {
 		instance = null;
 	}
 	
-	public void refresh() {
+/*	public void refresh() {
 		if (groupListView != null && groupAdapter != null) {
 			grouplist = EMGroupManager.getInstance().getAllGroups();
 			groupAdapter = new GroupAdapter(GroupsActivity.this, 1,
@@ -189,7 +187,7 @@ public class GroupsActivity extends BaseActivity {
 			groupListView.setAdapter(groupAdapter);
 			groupAdapter.notifyDataSetChanged();
 		}
-	}
+	}*/
 
 	/**
 	 * 返回

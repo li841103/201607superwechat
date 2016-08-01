@@ -14,11 +14,11 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.UserDao;
-import cn.ucai.FuLiCenter.task.DownAllGroup;
+
 import cn.ucai.FuLiCenter.task.DownAllContact;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
@@ -62,7 +62,7 @@ public class SplashActivity extends BaseActivity {
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
 
-					String userName = SuperWeChatApplication.getInstance().getUserName();
+					String userName = FuLiCenterApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar userAvatar = dao.getUserAvatar(userName);
 					Log.i("main", "这是闪屏界面输出的信息，userAvatar的信息如下：" + userAvatar);
@@ -78,8 +78,8 @@ public class SplashActivity extends BaseActivity {
 										if(result!=null){
 											UserAvatar userAvatar = (UserAvatar) result.getRetData();
 											if(userAvatar!=null){
-												SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
-												SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+												FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
+												FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 											}else{
 
 											}
@@ -94,10 +94,9 @@ public class SplashActivity extends BaseActivity {
 									}
 								});
 					}else{
-						SuperWeChatApplication.getInstance().setUserAvatar(userAvatar);
-						SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+						FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
+						FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 					}
-					new DownAllGroup(SplashActivity.this).exec(userName);
 					new DownAllContact(SplashActivity.this).exec(userName);
 
 					long costTime = System.currentTimeMillis() - start;

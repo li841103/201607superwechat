@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.ucai.FuLiCenter.bean.GroupAvatar;
+
 import cn.ucai.FuLiCenter.bean.MemberUserAvatar;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 
@@ -44,34 +44,10 @@ public class FuLiCenterApplication extends Application {
 
 	public List<UserAvatar> userAvatars = new ArrayList<UserAvatar>();
 	private Map<String, UserAvatar> stringUserAvatarMap = new HashMap<String, UserAvatar>();
-	private Map<String, GroupAvatar> GroupMap = new HashMap<String, GroupAvatar>();
 
-	public Map<String, GroupAvatar> getGroupMap() {
-		return GroupMap;
-	}
 
-	public void setGroupMap(Map<String, GroupAvatar> groupMap) {
-		GroupMap = groupMap;
-	}
 
-	private List<GroupAvatar> GroupList = new ArrayList<GroupAvatar>();
-	private List<GroupAvatar> GroupDeleteList = new ArrayList<GroupAvatar>();
 
-	public List<GroupAvatar> getGroupDeleteList() {
-		return GroupDeleteList;
-	}
-
-	public void setGroupDeleteList(List<GroupAvatar> groupDeleteList) {
-		GroupDeleteList = groupDeleteList;
-	}
-
-	public List<GroupAvatar> getGroupList() {
-		return GroupList;
-	}
-
-	public void setGroupList(List<GroupAvatar> groupList) {
-		GroupList = groupList;
-	}
 
 	public Map<String, UserAvatar> getStringUserAvatarMap() {
 		return stringUserAvatarMap;

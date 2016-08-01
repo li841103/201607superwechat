@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.widget.I;
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 
 /**
  *  * OkHttp框架的二次封装
@@ -99,7 +99,7 @@ public class OkHttpUtils2<T> {
 
     /**初始化mHandler*/
     private void initHandler() {
-        mHandler = new Handler(SuperWeChatApplication.applicationContext.getMainLooper()) {
+        mHandler = new Handler(FuLiCenterApplication.applicationContext.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {

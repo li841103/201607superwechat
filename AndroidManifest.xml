@@ -39,7 +39,7 @@
     
     
     <application
-        android:name="cn.ucai.FuLiCenter.SuperWeChatApplication"
+        android:name="cn.ucai.FuLiCenter.FuLiCenterApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo_uidemo"
         android:label="福利社" >

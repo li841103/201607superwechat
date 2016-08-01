@@ -38,7 +38,6 @@ import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.InviteMessgeDao;
 import cn.ucai.FuLiCenter.domain.InviteMessage;
 import cn.ucai.FuLiCenter.domain.InviteMessage.InviteMesageStatus;
-import cn.ucai.FuLiCenter.task.DownAllMemverMap;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.UserUtils;
 import cn.ucai.FuLiCenter.utils.Utils;
@@ -185,8 +184,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 					if(msg.getGroupId() == null) //同意好友请求
 						EMChatManager.getInstance().acceptInvitation(msg.getFrom());
 					else{ //同意加群申请
-					    EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
-						addMemberToAppGroup(msg.getFrom(), msg.getGroupId());
+					 //   EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
 					}
 					((Activity) context).runOnUiThread(new Runnable() {
 
@@ -219,28 +217,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		}).start();
 	}
 
-	private void addMemberToAppGroup(String username, final String groupId) {
-		final OkHttpUtils2<String> utils = new OkHttpUtils2();
-		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
-				.addParam(I.Member.USER_NAME,username)
-				.addParam(I.Member.GROUP_ID,groupId)
-				.targetClass(String.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
-					@Override
-
-					public void onSuccess(String s) {
-						Result result = Utils.getResultFromJson(s, GroupAdapter.class);
-						if(result!=null&&result.isRetMsg()){
-							new DownAllMemverMap(context, groupId).exec(groupId);
-						}
-					}
-
-					@Override
-					public void onError(String error) {
-
-					}
-				});
-	}
 
 	private static class ViewHolder {
 		ImageView avator;

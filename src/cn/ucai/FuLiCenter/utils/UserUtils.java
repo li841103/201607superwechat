@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.applib.controller.HXSDKHelper;
 import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
@@ -46,7 +46,7 @@ public class UserUtils {
 	 * @return
 	 */
 	public static UserAvatar getAppUserInfo(String username){
-		UserAvatar user = SuperWeChatApplication.getInstance().getStringUserAvatarMap().get(username);
+		UserAvatar user = FuLiCenterApplication.getInstance().getStringUserAvatarMap().get(username);
 		if(user == null){
 			user = new UserAvatar(username);
 		}
@@ -55,7 +55,7 @@ public class UserUtils {
 
 	public static MemberUserAvatar getAppMemberInfo(String hxid,String username){
 		MemberUserAvatar member=null;
-		HashMap<String, MemberUserAvatar> members = SuperWeChatApplication.getInstance().getMemberMap().get(hxid);
+		HashMap<String, MemberUserAvatar> members = FuLiCenterApplication.getInstance().getMemberMap().get(hxid);
 		if(members==null || members.size()<0){
 			return null;
 		}else{
@@ -92,7 +92,7 @@ public class UserUtils {
 		}
 	}
 
-	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
+/*	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
 		String user=hxid;
 		String path =getUserAvatarPath(user);
 		if(user != null&&path!=null){
@@ -101,9 +101,9 @@ public class UserUtils {
 		}else{
 			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
 		}
-	}
+	}*/
 
-	public static String getGroupAvatarPath(String hxid){
+/*	public static String getGroupAvatarPath(String hxid){
 		StringBuilder sb = new StringBuilder();
 		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)
 				.append(I.REQUEST_DOWNLOAD_AVATAR)
@@ -115,7 +115,7 @@ public class UserUtils {
 
 		Log.i("main", sb.toString());
 		return sb.toString();
-	}
+	}*/
 
 
 	public static String getUserAvatarPath(String username){
@@ -190,7 +190,7 @@ public class UserUtils {
 	 * 设置当前用户头像
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
-		String userName = SuperWeChatApplication.getInstance().getUserName();
+		String userName = FuLiCenterApplication.getInstance().getUserName();
 		setAppUserAvatar(context, userName, imageView);
 	}
     /**
@@ -205,7 +205,7 @@ public class UserUtils {
 
 
 	public static void setAppCurrentUserNick(TextView textView){
-		String userName = SuperWeChatApplication.getInstance().getUserName();
+		String userName = FuLiCenterApplication.getInstance().getUserName();
 		User user = UserUtils.getUserInfo(userName);
 		if(user != null){
 			if(user.getNick()!=null){

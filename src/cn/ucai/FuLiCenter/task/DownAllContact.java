@@ -7,7 +7,7 @@ import android.util.Log;
 import java.util.List;
 import java.util.Map;
 
-import cn.ucai.FuLiCenter.SuperWeChatApplication;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
@@ -40,8 +40,8 @@ public class DownAllContact {
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
                         if (list != null && list.size() > 0) {
-                            SuperWeChatApplication.getInstance().setUserAvatars(list);
-                            Map<String, UserAvatar> map = SuperWeChatApplication.getInstance().getStringUserAvatarMap();
+                            FuLiCenterApplication.getInstance().setUserAvatars(list);
+                            Map<String, UserAvatar> map = FuLiCenterApplication.getInstance().getStringUserAvatarMap();
                             for(UserAvatar u:list){
                                 map.put(u.getMUserName(), u);
                             }

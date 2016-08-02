@@ -69,7 +69,7 @@ public class XinPinFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mXinPinAdapter.getItemCount()-1){
-                    pageId++;
+                    pageId+=I.PAGE_SIZE_DEFAULT;
                     initData();
                 }
             }
@@ -92,6 +92,8 @@ public class XinPinFragment extends Fragment {
                 .execute(new OkHttpUtils2.OnCompleteListener<NewGoodBean[]>() {
                     @Override
                     public void onSuccess(NewGoodBean[] result) {
+                        mtv_hint.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setRefreshing(false);
                         if(result!=null){
                             Log.i("main", "newchangdu=" + result.length);
                             ArrayList<NewGoodBean> arr = Utils.array2List(result);

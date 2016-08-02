@@ -2,16 +2,18 @@ package cn.ucai.FuLiCenter.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import java.util.List;
-
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
+import cn.ucai.FuLiCenter.utils.ImageUtils;
+
 
 /**
  * Created by Zhou on 2016/8/1.
@@ -23,7 +25,7 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public XinPinAdapter(Context mcontext, List<NewGoodBean> mList) {
         this.mcontext = mcontext;
-        this.mList = mList;
+        this.mList = new ArrayList<NewGoodBean>();
         this.mList.addAll(mList);
     }
 
@@ -38,16 +40,26 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof XinPinViewHolder){
-            mXinPinViewHolder = (XinPinViewHolder) holder;
             NewGoodBean xin = mList.get(position);
-            mXinPinViewHolder.mmtvMoney.setText(xin.getPromotePrice());
+            mXinPinViewHolder = (XinPinViewHolder) holder;
+            mXinPinViewHolder.mmtvMoney.setText(xin.getCurrencyPrice());
             mXinPinViewHolder.mmtvDesc.setText(xin.getGoodsBrief());
+            ImageUtils.setXinPinImage(mcontext,xin.getGoodsThumb(),mXinPinViewHolder.mmivImage);
         }
     }
 
     @Override
     public int getItemCount() {
         return mList==null?0:mList.size();
+    }
+
+    public void initData(ArrayList<NewGoodBean> arr) {
+        if(mList!=null){
+            Log.i("main", "mList!=null");
+            mList.clear();
+            mList.addAll(arr);
+            notifyDataSetChanged();
+        }
     }
 
 
@@ -61,4 +73,5 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             mmtvMoney = (TextView) itemView.findViewById(R.id.tvMoney);
         }
     }
+
 }

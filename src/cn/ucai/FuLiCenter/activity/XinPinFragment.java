@@ -35,7 +35,13 @@ public class XinPinFragment extends Fragment {
     XinPinAdapter mXinPinAdapter;
     GridLayoutManager mGridLayoutManager;
     TextView mtv_hint;
+    final static int PULL_DOWN = 1;
+    final static int BUTTOM_DOWN = 0;
     int pageId=0;
+    boolean ismore = true;
+    int first;
+
+
     public XinPinFragment() {
         // Required empty public constructor
     }
@@ -48,7 +54,7 @@ public class XinPinFragment extends Fragment {
         View view = View.inflate(mContext, R.layout.fragment_xinpin, null);
         mlist = new ArrayList<NewGoodBean>();
         initView(view);
-        initData();
+        initData(BUTTOM_DOWN);
         setListener();
         return view;
     }
@@ -57,10 +63,14 @@ public class XinPinFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mtv_hint.setVisibility(View.VISIBLE);
-                mSwipeRefreshLayout.setVisibility(View.VISIBLE);
-                pageId=0;
-                initData();
+                if(first==0){
+                    mtv_hint.setVisibility(View.VISIBLE);
+                    mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+                    ismore = true;
+                    mXinPinAdapter.setFooter("加载更多数据...");
+                    pageId=0;
+                    initData(BUTTOM_DOWN);
+                }
             }
         });
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -68,9 +78,10 @@ public class XinPinFragment extends Fragment {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mXinPinAdapter.getItemCount()-1){
+                Log.i("main", "recyclerView.SCROLL_STATE_IDLE=" + newState + "   last==" + last + "  ismore=" + ismore+"    First="+first);
+                if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mXinPinAdapter.getItemCount()-1&&ismore){
                     pageId+=I.PAGE_SIZE_DEFAULT;
-                    initData();
+                    initData(PULL_DOWN);
                 }
             }
 
@@ -78,11 +89,12 @@ public class XinPinFragment extends Fragment {
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 last = mGridLayoutManager.findLastVisibleItemPosition();
+                first=mGridLayoutManager.findFirstVisibleItemPosition();
             }
         });
     }
 
-    private void initData() {
+    private void initData(final int DOWN_CODE) {
         final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(I.CAT_ID))
@@ -97,7 +109,11 @@ public class XinPinFragment extends Fragment {
                         if(result!=null){
                             Log.i("main", "newchangdu=" + result.length);
                             ArrayList<NewGoodBean> arr = Utils.array2List(result);
-                            mXinPinAdapter.initData(arr);
+                            if(arr.size()<I.PAGE_SIZE_DEFAULT){
+                                mXinPinAdapter.setFooter("没有更多数据可加载！");
+                                ismore = false;
+                            }
+                            mXinPinAdapter.initData(arr,DOWN_CODE);
                         }
 
                     }

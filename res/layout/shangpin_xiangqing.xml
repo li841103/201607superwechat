@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff">
+    <include layout="@layout/shangpin_title"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/english_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="English_name"
+            android:textColor="#000"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="50dp"/>
+        <TextView
+            android:id="@+id/chese_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="就叫我双层电饭煲！"
+            android:textColor="#000"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/english_name"/>
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$20.1"
+            android:textColor="@color/personal_center_top_bg"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/english_name"
+            android:layout_toRightOf="@+id/chese_name"/>
+    </RelativeLayout>
+
+    <cn.ucai.FuliCenter.view.SlideAutoLoopView
+        android:id="@+id/salv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/good_detail_bg_white" />
+
+    <cn.ucai.FuliCenter.view.FlowIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:count="4"
+        app:focus="0"
+        app:focus_color="@color/good_detaul_flow_indicator_focus"
+        app:normal_color="#a1d1d1d1"
+        app:r="5dp"
+        app:space="3dp" />
+
+
+
+</LinearLayout>

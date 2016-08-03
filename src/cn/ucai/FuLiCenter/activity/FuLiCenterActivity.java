@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 
@@ -10,10 +11,11 @@ import cn.ucai.FuLiCenter.R;
  * Created by Zhou on 2016/8/1.
  */
 public class FuLiCenterActivity extends BaseActivity implements View.OnClickListener{
-    RadioButton xinpin,jingxuan,fenlei,gouwuche,shoucang,me;
+    RadioButton xinpin,jingxuan,fenlei,gouwuche,me;
     RadioButton[] rbArr;
     int index;
     int currentIndex;
+    XinPinFragment mXinPinFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,11 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         rbArr[2] = fenlei;
         rbArr[3] = gouwuche;
         rbArr[4] = me;
+        mXinPinFragment = new XinPinFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.rela_layout, mXinPinFragment)
+                .show(mXinPinFragment)
+                .commit();
     }
 
 

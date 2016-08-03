@@ -15,16 +15,17 @@ dependencies {
     compile files('libs/okio-1.6.0.jar')
     compile files('libs/gson-2.2.4.jar')
     compile files('libs/jackson-core-asl-1.9.11 (1).jar')
+    compile 'com.android.support:recyclerview-v7:24.0.0'
 }
 
 android {
-    lintOptions{
+    lintOptions {
         checkReleaseBuilds false
         abortOnError false
     }
     compileSdkVersion 19
     buildToolsVersion "24.0.0"
-    defaultConfig{
+    defaultConfig {
         applicationId "cn.ucai.FuLiCenter"
     }
     sourceSets {

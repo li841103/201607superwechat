@@ -1,18 +1,24 @@
 package cn.ucai.FuLiCenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.R;
+import cn.ucai.FuLiCenter.activity.shangpinxiangqingActivity;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.ImageUtils;
 import cn.ucai.FuLiCenter.widget.I;
@@ -27,6 +33,7 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     XinPinViewHolder mXinPinViewHolder;
     FootViewHolder mFootViewHolder;
     String footer;
+
 
     public void setFooter(String footer) {
         this.footer = footer;
@@ -64,11 +71,17 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(holder instanceof XinPinViewHolder){
-            NewGoodBean xin = mList.get(position);
+           final NewGoodBean xin = mList.get(position);
             mXinPinViewHolder = (XinPinViewHolder) holder;
             mXinPinViewHolder.mmtvMoney.setText(xin.getCurrencyPrice());
             mXinPinViewHolder.mmtvDesc.setText(xin.getGoodsBrief());
             ImageUtils.setXinPinImage(mcontext,xin.getGoodsThumb(),mXinPinViewHolder.mmivImage);
+            mXinPinViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mcontext.startActivity(new Intent(mcontext, shangpinxiangqingActivity.class).putExtra(D.GoodDetails.KEY_GOODS_ID, xin.getGoodsId()));
+                }
+            });
         }
         if(holder instanceof FootViewHolder){
             mFootViewHolder = (FootViewHolder) holder;
@@ -100,11 +113,13 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     class XinPinViewHolder extends RecyclerView.ViewHolder{
         ImageView mmivImage;
         TextView mmtvDesc,mmtvMoney;
+        LinearLayout layout;
         public XinPinViewHolder(View itemView) {
             super(itemView);
             mmtvDesc= (TextView) itemView.findViewById(R.id.tvDesc);
             mmivImage = (ImageView) itemView.findViewById(R.id.ivImage);
             mmtvMoney = (TextView) itemView.findViewById(R.id.tvMoney);
+            layout = (LinearLayout) itemView.findViewById(R.id.layout_xinpin);
         }
     }
 

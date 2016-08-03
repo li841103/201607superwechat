@@ -43,9 +43,9 @@ public class GoodDetails implements Serializable {
     private String goodsImg;
     private long addTime;
     private String shareUrl;
+    private PropertiesBean[] properties;
     @JsonProperty("isPromote")
     private boolean isPromote;
-    private PropertiesBean[] properties;
 
     @Override
     public String toString() {

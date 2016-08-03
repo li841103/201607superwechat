@@ -13,8 +13,15 @@
  */
 package cn.ucai.FuLiCenter.utils;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import com.easemob.util.EMLog;
 import com.easemob.util.PathUtil;
+import com.squareup.picasso.Picasso;
+
+import cn.ucai.FuLiCenter.R;
+import cn.ucai.FuLiCenter.widget.I;
 
 public class ImageUtils {
 //	public static String getThumbnailImagePath(String imagePath) {
@@ -41,6 +48,11 @@ public class ImageUtils {
         EMLog.d("msg", "thum image path:" + path);
         return path;
     }
+
+	public static void setXinPinImage(Context context, String thmub, ImageView imageView){
+		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL + thmub;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
 	
 	
 }

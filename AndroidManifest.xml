@@ -50,6 +50,13 @@
             android:theme="@style/horizontal_slide"
             android:windowSoftInputMode="adjustPan" >
         </activity>
+        <activity
+            android:name="cn.ucai.FuLiCenter.activity.FuLiCenterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
 
         <!-- 开屏页 -->
         <activity
@@ -78,6 +85,12 @@
             android:theme="@style/horizontal_slide" 
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
+        <!--商品详情 -->
+        <activity
+            android:name="cn.ucai.FuLiCenter.activity.shangpinxiangqingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+        </activity>
         <!-- 聊天页面 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.ChatActivity"
@@ -93,40 +106,16 @@
             android:windowSoftInputMode="stateVisible"
             android:theme="@style/horizontal_slide" >
         </activity>
-        <!-- 群组详情 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.GroupDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
+
         <!-- 群组列表 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.GroupsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+
         
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.ChatRoomActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+
         <!-- 聊天室详情 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.ChatRoomDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
+
         
         <!-- 新建群组 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.NewGroupActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+
         <!-- 退出群组提示框 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.ExitGroupDialog"
@@ -134,12 +123,7 @@
             android:theme="@style/MyDialogStyleBottom" >
         </activity>
         <!-- 群组选人 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.GroupPickContactsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+
         <!-- 地图 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.BaiduMapActivity"
@@ -191,13 +175,7 @@
             android:theme="@style/horizontal_slide" >
         </activity>
 
-        <!-- 公开的群聊列表 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.PublicGroupsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan" >
-        </activity>
+
         
         <activity
             android:name="cn.ucai.FuLiCenter.activity.PublicChatRoomsActivity"
@@ -221,23 +199,9 @@
             android:launchMode="singleTask"
             android:theme="@style/horizontal_slide" >
         </activity>
-        <!-- 群聊简单信息 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.GroupSimpleDetailActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
+
         <!-- 群组黑名单用户列表 -->
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.GroupBlacklistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
-        <activity
-            android:name="cn.ucai.FuLiCenter.activity.PublicGroupsSeachActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" >
-        </activity>
+
         <activity
             android:name="cn.ucai.FuLiCenter.activity.EditActivity"
             android:screenOrientation="portrait"
@@ -330,7 +294,7 @@
         <!-- 设置环信应用的appkey -->
         <meta-data
             android:name="EASEMOB_APPKEY"
-            android:value="zhou951001#superwechat" />
+            android:value="zhou951001#fulicenter" />
         <!-- 声明sdk所需的service -->
         <service android:name="com.easemob.chat.EMChatService"/>
         <!-- 声明sdk所需的receiver -->

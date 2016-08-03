@@ -92,30 +92,7 @@ public class UserUtils {
 		}
 	}
 
-/*	public static void setAppGroupAvatar(Context context, String hxid, ImageView imageView){
-		String user=hxid;
-		String path =getUserAvatarPath(user);
-		if(user != null&&path!=null){
-			path = UserUtils.getGroupAvatarPath(user);
-			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
-		}else{
-			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
-		}
-	}*/
 
-/*	public static String getGroupAvatarPath(String hxid){
-		StringBuilder sb = new StringBuilder();
-		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)
-				.append(I.REQUEST_DOWNLOAD_AVATAR)
-				.append(I.ALT).append(I.NAME_OR_HXID)
-				.append(I.EQUAL).append(hxid)
-				.append(I.ALT).append(I.AVATAR_TYPE)
-				.append(I.EQUAL)
-				.append(I.AVATAR_TYPE_GROUP_PATH);
-
-		Log.i("main", sb.toString());
-		return sb.toString();
-	}*/
 
 
 	public static String getUserAvatarPath(String username){
@@ -230,20 +207,5 @@ public class UserUtils {
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);
 	}
 
-	public static void setAppMemberNick(String hxid, String username, TextView tv_usernick) {
-		MemberUserAvatar member = UserUtils.getAppMemberInfo(hxid, username);
-		if(member==null){
-			Log.i("main,", "member==null");
-		}
 
-		if(member != null){
-			if(member.getMUserNick()!=null){
-				tv_usernick.setText(member.getMUserNick());
-			}else{
-				tv_usernick.setText(member.getMUserName());
-			}
-		}else{
-			tv_usernick.setText(member.getMUserName());
-		}
-	}
 }

@@ -16,12 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.R;
+import cn.ucai.FuLiCenter.adapter.BoutiqueAdapter;
 import cn.ucai.FuLiCenter.adapter.XinPinAdapter;
+import cn.ucai.FuLiCenter.bean.BoutiqueBean;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
@@ -30,22 +33,21 @@ import cn.ucai.FuLiCenter.widget.I;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class XinPinFragment extends Fragment {
+public class BoutiqueFragment extends Fragment {
     FuLiCenterActivity mContext;
-    List<NewGoodBean> mlist;
+    List<BoutiqueBean> mlist;
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mRecyclerView;
-    XinPinAdapter mXinPinAdapter;
-    GridLayoutManager mGridLayoutManager;
+    BoutiqueAdapter mBoutiqueAdapter;
+    LinearLayoutManager mLinearLayoutManager;
     TextView mtv_hint;
     final static int PULL_DOWN = 1;
     final static int BUTTOM_DOWN = 0;
-    int pageId=0;
     boolean ismore = true;
     int first;
 
 
-    public XinPinFragment() {
+    public BoutiqueFragment() {
         // Required empty public constructor
     }
 
@@ -53,10 +55,10 @@ public class XinPinFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("main", "进入了XinPin的OnCreate方法");
+        Log.i("main", "进入了Boutique的OnCreate方法");
         mContext = (FuLiCenterActivity) getContext();
-        View view = View.inflate(mContext, R.layout.fragment_xinpin, null);
-        mlist = new ArrayList<NewGoodBean>();
+        View view = inflater.inflate(R.layout.jingxuan_fragment, null,false);
+        mlist = new ArrayList<BoutiqueBean>();
         initView(view);
         initData(BUTTOM_DOWN);
         setListener();
@@ -71,8 +73,7 @@ public class XinPinFragment extends Fragment {
                     mtv_hint.setVisibility(View.VISIBLE);
                     mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     ismore = true;
-                    mXinPinAdapter.setFooter("加载更多数据...");
-                    pageId=0;
+                    mBoutiqueAdapter.setFooter("加载更多数据...");
                     initData(BUTTOM_DOWN);
                 }
             }
@@ -83,8 +84,7 @@ public class XinPinFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 Log.i("main", "recyclerView.SCROLL_STATE_IDLE=" + newState + "   last==" + last + "  ismore=" + ismore+"    First="+first);
-                if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mXinPinAdapter.getItemCount()-1&&ismore){
-                    pageId+=I.PAGE_SIZE_DEFAULT;
+                if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mBoutiqueAdapter.getItemCount()-1&&ismore){
                     initData(PULL_DOWN);
                 }
             }
@@ -92,58 +92,57 @@ public class XinPinFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                last = mGridLayoutManager.findLastVisibleItemPosition();
-                first=mGridLayoutManager.findFirstVisibleItemPosition();
+                last = mLinearLayoutManager.findLastVisibleItemPosition();
+                first=mLinearLayoutManager.findFirstVisibleItemPosition();
             }
         });
     }
 
     private void initData(final int DOWN_CODE) {
-        final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
-                .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(I.CAT_ID))
-                .addParam(I.PAGE_ID,String.valueOf(pageId))
-                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
-                .targetClass(NewGoodBean[].class)
-                .execute(new OkHttpUtils2.OnCompleteListener<NewGoodBean[]>() {
+        final OkHttpUtils2<BoutiqueBean[]> utils = new OkHttpUtils2<BoutiqueBean[]>();
+        utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
+                .targetClass(BoutiqueBean[].class)
+                .execute(new OkHttpUtils2.OnCompleteListener<BoutiqueBean[]>() {
                     @Override
-                    public void onSuccess(NewGoodBean[] result) {
+                    public void onSuccess(BoutiqueBean[] result) {
                         mtv_hint.setVisibility(View.GONE);
-                        mSwipeRefreshLayout.setRefreshing(false);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
                         if(result!=null){
-                            Log.i("main", "newchangdu=" + result.length);
-                            ArrayList<NewGoodBean> arr = Utils.array2List(result);
-                            if(arr.size()<I.PAGE_SIZE_DEFAULT){
-                                mXinPinAdapter.setFooter("没有更多数据可加载！");
+                            Log.i("main", "BoutiqueBeanSize=" + result.length+"date="+ Arrays.toString(result));
+                            ArrayList<BoutiqueBean> arr = Utils.array2List(result);
+                           /* if(arr.size()==0){
+                                mBoutiqueAdapter.setFooter("没有更多数据可加载！");
                                 ismore = false;
-                            }
-                            mXinPinAdapter.initData(arr,DOWN_CODE);
+                                return;
+                            }*/
+                            mBoutiqueAdapter.initData(arr,DOWN_CODE);
                         }
-
                     }
 
                     @Override
                     public void onError(String error) {
-                      //  mtv_hint.setVisibility(View.GONE);
-                       // mSwipeRefreshLayout.setVisibility(View.GONE);
+                        mtv_hint.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setVisibility(View.GONE);
                     }
                 });
+
+
     }
 
     private void initView(View view) {
-        mtv_hint = (TextView) view.findViewById(R.id.refresh_hint);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_xinpin);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.rl_xinpin);
-        mGridLayoutManager = new GridLayoutManager(mContext, I.COLUM_NUM);
-        mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(mGridLayoutManager);
-        mXinPinAdapter = new XinPinAdapter(mContext, mlist);
-        mRecyclerView.setAdapter(mXinPinAdapter);
+        mtv_hint = (TextView) view.findViewById(R.id.refresh_hint_boutique);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.srl_boutique);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.rl_boutique);
+        mLinearLayoutManager = new LinearLayoutManager(mContext);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mBoutiqueAdapter = new BoutiqueAdapter(mContext, mlist);
+        mRecyclerView.setAdapter(mBoutiqueAdapter);
     }
 
 
 
-    
-    
+
+
 
 }

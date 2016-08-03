@@ -49,6 +49,11 @@ public class ImageUtils {
         return path;
     }
 
+	public static void setBoutiqueImage(Context context, String thmub, ImageView imageView){
+		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL + thmub;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
+
 	public static void setXinPinImage(Context context, String thmub, ImageView imageView){
 		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL + thmub;
 		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);

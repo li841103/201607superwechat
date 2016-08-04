@@ -11,6 +11,7 @@ import android.widget.ExpandableListView;
 import com.squareup.okhttp.internal.Util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.R;
@@ -46,23 +47,16 @@ public class FenLeiFragment extends Fragment{
             @Override
             public void onSuccess(CategoryGroupBean[] result) {
                 if(result!=null){
+                    Log.i("main", "大类数据下载完成,大类数据为："+ Arrays.toString(result));
                     ArrayList<CategoryGroupBean> groupList = Utils.array2List(result);
+                    mCategoryGroupBean = groupList;
+                    int i=0;
                     for(CategoryGroupBean g:groupList){
-                        DownSonData(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
-                            @Override
-                            public void onSuccess(CategoryChildBean[] result) {
-                                    if (result!=null){
-                                        ArrayList<CategoryChildBean> categoryChildList = Utils.array2List(result);
-
-                                    }
-                            }
-
-                            @Override
-                            public void onError(String error) {
-
-                            }
-                        },g.getId());
+                        mCategoryChildBean.add(new ArrayList<CategoryChildBean>());
+                        DownSonData(i,g.getId());
+                        i++;
                     }
+                    mFenLeiAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -72,14 +66,27 @@ public class FenLeiFragment extends Fragment{
             }
         });
     }
-    private void DownSonData(OkHttpUtils2.OnCompleteListener<CategoryChildBean[]> listener,int id){
+    private void DownSonData(final int i,int id){
         OkHttpUtils2<CategoryChildBean[]> utils = new OkHttpUtils2<CategoryChildBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam(I.CategoryChild.PARENT_ID, String.valueOf(id))//需要大类的ID
                 .addParam(I.PAGE_ID, String.valueOf(I.PAGE_ID_DEFAULT))
                 .addParam(I.PAGE_SIZE, String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(CategoryChildBean[].class)
-                .execute(listener);
+                .execute(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
+                    @Override
+                    public void onSuccess(CategoryChildBean[] result) {
+                        if(result!=null){
+                            ArrayList<CategoryChildBean> categoryChild = Utils.array2List(result);
+                            mCategoryChildBean.set(i, categoryChild);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+
+                    }
+                });
     }
     private void DownGroupData(OkHttpUtils2.OnCompleteListener<CategoryGroupBean[]> listener) {
         OkHttpUtils2<CategoryGroupBean[]> utils = new OkHttpUtils2<CategoryGroupBean[]>();
@@ -94,6 +101,5 @@ public class FenLeiFragment extends Fragment{
         mExpandableListView.setGroupIndicator(null);
         mFenLeiAdapter = new FenLeiAdapter(mContext,mCategoryGroupBean,mCategoryChildBean);
         mExpandableListView.setAdapter(mFenLeiAdapter);
-
     }
 }

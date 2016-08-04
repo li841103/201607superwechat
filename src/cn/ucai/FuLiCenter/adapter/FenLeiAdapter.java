@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -14,6 +15,7 @@ import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.bean.CategoryChildBean;
 import cn.ucai.FuLiCenter.bean.CategoryGroupBean;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
+import cn.ucai.FuLiCenter.utils.ImageUtils;
 
 /**
  * Created by Zhou on 2016/8/4.
@@ -43,12 +45,12 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public Object getGroup(int i) {
+    public CategoryGroupBean getGroup(int i) {
         return mGroupList.get(i);
     }
 
     @Override
-    public Object getChild(int i, int i1) {
+    public CategoryChildBean getChild(int i, int i1) {
         return mSonList.get(i).get(i1);
     }
 
@@ -90,7 +92,7 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
     }
 
     @Override
-    public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(int groupPosition, int sonPosition, boolean b, View view, ViewGroup viewGroup) {
         SonViewHolder holder = null;
         if(view==null){//第一次创建
             holder = new SonViewHolder();
@@ -101,12 +103,25 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
         }else{                      //不是第一次创建时   直接从存在view的tag中取得
             holder = (SonViewHolder) view.getTag();
         }
+        CategoryChildBean child = (CategoryChildBean) getChild(groupPosition, sonPosition);//得到当前这个具体的子类的对象
+        if(child!=null){//如果拿到了这个数据
+            ImageUtils.setFenLeiSonImage(mContext,child.getImageUrl(),holder.mivSonFindNormal);//设置子类图片控件显示当前子类对象的图片
+            holder.mtvSonName.setText(child.getName());//设置子类控件显示当前子类对象的名称
+        }
         return view;
     }
 
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
+    }
+
+    public void addAll(List<CategoryGroupBean> mCategoryGroupBean, List<ArrayList<CategoryChildBean>> mCategoryChildBean) {
+        this.mGroupList.clear();
+        this.mGroupList.addAll(mCategoryGroupBean);
+        this.mSonList.clear();
+        this.mSonList.addAll(mCategoryChildBean);
+        notifyDataSetChanged();
     }
 
     class GroupViewHolder{

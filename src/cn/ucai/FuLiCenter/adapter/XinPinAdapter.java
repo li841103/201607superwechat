@@ -51,25 +51,25 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
-      /*  if(viewType==I.TYPE_FOOTER){
+        if(viewType==I.TYPE_FOOTER){
             View view = LayoutInflater.from(mcontext).inflate(R.layout.foot_item, null, false);
             holder = new FootViewHolder(view);
-        }*/
-     //   if(viewType==I.TYPE_ITEM){
+        }
+        if(viewType==I.TYPE_ITEM){
             View view = LayoutInflater.from(mcontext).inflate(R.layout.xinpin_item, null, false);
             holder = new XinPinViewHolder(view);
-      //  }
+        }
         return holder;
     }
 
-    /*@Override
+    @Override
     public int getItemViewType(int position) {
         if(position==getItemCount()-1){
             return I.TYPE_FOOTER;
         }else{
             return I.TYPE_ITEM;
         }
-    }*/
+    }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {

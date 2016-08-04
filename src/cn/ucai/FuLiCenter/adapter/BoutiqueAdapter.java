@@ -83,7 +83,9 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mcontext.startActivity(new Intent(mcontext, Boutique_DetailsActivity.class).putExtra(D.Boutique.KEY_ID, boutiqueBean.getId()));
+                    mcontext.startActivity(new Intent(mcontext,
+                            Boutique_DetailsActivity.class).putExtra(D.Boutique.KEY_ID,
+                            boutiqueBean.getId()).putExtra(D.Boutique.KEY_NAME,boutiqueBean.getName()));
                 }
             });
         }

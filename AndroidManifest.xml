@@ -91,6 +91,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
         </activity>
+        <!--精品二级页面 -->
+        <activity
+            android:name="cn.ucai.FuLiCenter.activity.Boutique_DetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+        </activity>
         <!-- 聊天页面 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.ChatActivity"

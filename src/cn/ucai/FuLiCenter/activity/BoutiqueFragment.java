@@ -73,7 +73,7 @@ public class BoutiqueFragment extends Fragment {
                     mtv_hint.setVisibility(View.VISIBLE);
                     mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                     ismore = true;
-                    mBoutiqueAdapter.setFooter("加载更多数据...");
+                    mBoutiqueAdapter.setFooter("没有更多数据可加载...");
                     initData(BUTTOM_DOWN);
                 }
             }
@@ -106,23 +106,23 @@ public class BoutiqueFragment extends Fragment {
                     @Override
                     public void onSuccess(BoutiqueBean[] result) {
                         mtv_hint.setVisibility(View.GONE);
-                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setRefreshing(false);
                         if(result!=null){
                             Log.i("main", "BoutiqueBeanSize=" + result.length+"date="+ Arrays.toString(result));
                             ArrayList<BoutiqueBean> arr = Utils.array2List(result);
-                           /* if(arr.size()==0){
+                            if(!ismore){
                                 mBoutiqueAdapter.setFooter("没有更多数据可加载！");
-                                ismore = false;
                                 return;
-                            }*/
+                            }
                             mBoutiqueAdapter.initData(arr,DOWN_CODE);
+                            ismore = false;
                         }
                     }
 
                     @Override
                     public void onError(String error) {
                         mtv_hint.setVisibility(View.GONE);
-                        mSwipeRefreshLayout.setVisibility(View.GONE);
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
 

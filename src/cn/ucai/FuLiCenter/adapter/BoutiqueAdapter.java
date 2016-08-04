@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,7 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.R;
+import cn.ucai.FuLiCenter.activity.Boutique_DetailsActivity;
 import cn.ucai.FuLiCenter.bean.BoutiqueBean;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.ImageUtils;
@@ -77,12 +80,12 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             mBoutiqueViewHolder.mtvTitle.setText(boutiqueBean.getTitle());
 
             ImageUtils.setBoutiqueImage(mcontext,boutiqueBean.getImageurl(),mBoutiqueViewHolder.mivImage);
-           /* mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mcontext.startActivity(new Intent(mcontext, shangpinxiangqingActivity.class).putExtra(D.GoodDetails.KEY_GOODS_ID, boutiqueBean.getId()));
+                    mcontext.startActivity(new Intent(mcontext, Boutique_DetailsActivity.class).putExtra(D.Boutique.KEY_ID, boutiqueBean.getId()));
                 }
-            });*/
+            });
         }
         if(holder instanceof FootViewHolder){
             mFootViewHolder = (FootViewHolder) holder;

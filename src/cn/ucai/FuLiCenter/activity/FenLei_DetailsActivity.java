@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.activity;
 
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -141,20 +142,31 @@ public class FenLei_DetailsActivity extends BaseActivity {
     class listener implements View.OnClickListener{
         @Override
         public void onClick(View view) {
+            Drawable image;
             switch (view.getId()){
                 case R.id.btn_money:
                     if(mAddTime_Desc){
+                        image = getResources().getDrawable(R.drawable.arrow_order_up);
                         mXinPinAdapter.Sory(I.SORT_BY_PRICE_ASC);
                     }else{
+                        image = getResources().getDrawable(R.drawable.arrow_order_down);
                         mXinPinAdapter.Sory(I.SORT_BY_PRICE_DESC);
                     }
+                    mAddTime_Desc = !mAddTime_Desc;
+                    image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
+                    mButton_Money.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
                     break;
                 case R.id.btn_addtime:
                     if(mMoney_Desc){
+                        image = getResources().getDrawable(R.drawable.arrow_order_up);
                         mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_ASC);
                     }else{
+                        image = getResources().getDrawable(R.drawable.arrow_order_down);
                         mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_DESC);
                     }
+                    mMoney_Desc = !mMoney_Desc;
+                    image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
+                    mButton_Money.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
                     break;
 
             }

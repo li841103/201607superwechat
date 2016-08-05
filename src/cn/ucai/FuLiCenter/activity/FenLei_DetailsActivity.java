@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,7 +42,10 @@ public class FenLei_DetailsActivity extends BaseActivity {
     int pageId=0;
     boolean ismore = true;
     int first;
-
+    Button mButton_Money;
+    Button mButton_AddTime;
+    boolean mMoney_Desc;    //价格的降序
+    boolean mAddTime_Desc;  //上架时间的降序
 
     public FenLei_DetailsActivity() {
         // Required empty public constructor
@@ -51,17 +55,20 @@ public class FenLei_DetailsActivity extends BaseActivity {
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         mContext = this;
-        setContentView(R.layout.fragment_boutique);
+        setContentView(R.layout.fragment_fenlei_sort);
         mlist = new ArrayList<NewGoodBean>();
         initView();
         initData(BUTTOM_DOWN);
         setListener();
-
     }
 
 
 
     private void setListener() {
+
+        mButton_Money.setOnClickListener( new listener());
+        mButton_AddTime.setOnClickListener( new listener());
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -130,9 +137,35 @@ public class FenLei_DetailsActivity extends BaseActivity {
                 });
     }
 
+
+    class listener implements View.OnClickListener{
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case R.id.btn_money:
+                    if(mAddTime_Desc){
+                        mXinPinAdapter.Sory(I.SORT_BY_PRICE_ASC);
+                    }else{
+                        mXinPinAdapter.Sory(I.SORT_BY_PRICE_DESC);
+                    }
+                    break;
+                case R.id.btn_addtime:
+                    if(mMoney_Desc){
+                        mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_ASC);
+                    }else{
+                        mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_DESC);
+                    }
+                    break;
+
+            }
+        }
+    }
+
     private void initView() {
      /*   title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);*/
+        mButton_Money = (Button) findViewById(R.id.btn_money);
+        mButton_AddTime = (Button) findViewById(R.id.btn_addtime);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.boutique_srl_fenlei);
         mRecyclerView = (RecyclerView)findViewById(R.id.boutique_rl_fenlei);

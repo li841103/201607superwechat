@@ -20,6 +20,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
     int currentIndex;
     XinPinFragment mXinPinFragment;
     BoutiqueFragment mBoutiqueFragment;
+    FenLeiFragment mFenLeiFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         me = (RadioButton) findViewById(R.id.me);
         mXinPinFragment = new XinPinFragment();
         mBoutiqueFragment = new BoutiqueFragment();
+        mFenLeiFragment = new FenLeiFragment();
         rbArr = new RadioButton[5];
         rbArr[0] = xinpin;
         rbArr[1] = jingxuan;
@@ -55,9 +57,13 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         fragment = new Fragment[5];
         fragment[0] = mXinPinFragment;
         fragment[1] = mBoutiqueFragment;
+        fragment[2] = mFenLeiFragment;
         getSupportFragmentManager().beginTransaction()
+                .add(R.id.rela_layout,mXinPinFragment)
                 .add(R.id.rela_layout, mBoutiqueFragment)
-                .show(mBoutiqueFragment)
+                .add(R.id.rela_layout,mFenLeiFragment)
+                .hide(mBoutiqueFragment).hide(mFenLeiFragment)
+                .show(mXinPinFragment)
                 .commit();
         xinpin.setChecked(true);
     }
@@ -82,13 +88,13 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
                 index = 4;
                 break;
         }
+        rbArr[index].setChecked(true);
+        rbArr[currentIndex].setChecked(false);
+        FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
         if (index != currentIndex) {
-//            if(!fragment[index].isAdded()){
-//                trx.add(R.id.rela_layout, fragment[index]);
-//            }
-            rbArr[index].setChecked(true);
-            rbArr[currentIndex].setChecked(false);
-            FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
+            if(!fragment[index].isAdded()){
+                trx.add(R.id.rela_layout, fragment[index]);
+            }
             trx.hide(fragment[currentIndex]).show(fragment[index]).commit();
             Log.i("main", "index=" + index);
 //            trx.show(fragment[index]).commit();

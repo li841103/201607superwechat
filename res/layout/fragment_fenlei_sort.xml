@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <include layout="@layout/fenlei_title"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/orange">
+        <Button
+            android:id="@+id/btn_money"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="价格"
+            android:background="@null"
+            android:drawableRight="@drawable/arrow_order_down"
+            android:paddingRight="10dp"
+            />
+        <Button
+            android:id="@+id/btn_addtime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="上架时间"
+            android:background="@null"
+            android:drawableRight="@drawable/arrow_order_up"
+            android:paddingRight="10dp"
+          />
+
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/boutique_srl_xinpin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/boutique_refresh_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="刷新中..."
+                android:gravity="center_horizontal"
+                android:visibility="gone"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/boutique_rl_xinpin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
+
+

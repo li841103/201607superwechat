@@ -54,9 +54,9 @@ public class FenLeiFragment extends Fragment{
                     for(CategoryGroupBean g:groupList){
                         mCategoryChildBean.add(new ArrayList<CategoryChildBean>());
                         DownSonData(i,g.getId());
-                        i++;
+                        i+=1;
                     }
-                    mFenLeiAdapter.notifyDataSetChanged();
+
                 }
             }
 
@@ -77,14 +77,17 @@ public class FenLeiFragment extends Fragment{
                     @Override
                     public void onSuccess(CategoryChildBean[] result) {
                         if(result!=null){
-                            ArrayList<CategoryChildBean> categoryChild = Utils.array2List(result);
-                            mCategoryChildBean.set(i, categoryChild);
-                        }
+                            Log.i("main", "小类数据下载成功！i="+i);
+                                ArrayList<CategoryChildBean> categoryChild = Utils.array2List(result);
+                                mCategoryChildBean.set(i, categoryChild);
+                                mFenLeiAdapter.addAll(mCategoryGroupBean,mCategoryChildBean);
+                            }
+
                     }
 
                     @Override
                     public void onError(String error) {
-
+                        Log.i("main", "小类数据下载不成功！");
                     }
                 });
     }

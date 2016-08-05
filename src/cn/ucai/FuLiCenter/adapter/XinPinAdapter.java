@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -103,12 +104,12 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Log.i("main", "mList!=null");
             mList.clear();
             mList.addAll(arr);
-            soryByAddTime();
+            Sory(I.SORT_BY_PRICE_DESC);
             notifyDataSetChanged();
         }
         if(mList!=null&&DOWN_CODE==1){
             mList.addAll(arr);
-            soryByAddTime();
+            Sory(I.SORT_BY_PRICE_DESC);
             notifyDataSetChanged();
         }
     }
@@ -137,15 +138,49 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    private void soryByAddTime(){
-        Collections.sort(mList, new Comparator<NewGoodBean>() {
-            @Override
-            public int compare(NewGoodBean left, NewGoodBean right) {
-                return (int) (left.getAddTime()-right.getAddTime());
-            }
-        });
+    public  void Sory(final int SORY_CODE){
+        switch (SORY_CODE){
+
+            case I.SORT_BY_PRICE_ASC:
+                Collections.sort(mList, new Comparator<NewGoodBean>() {
+                    @Override
+                    public int compare(NewGoodBean left, NewGoodBean right) {
+                        return (int) (getMoneyInt(left.getCurrencyPrice())-getMoneyInt(right.getCurrencyPrice()));
+                    }
+                });
+                break;
+            case I.SORT_BY_PRICE_DESC:
+                Collections.sort(mList, new Comparator<NewGoodBean>() {
+                    @Override
+                    public int compare(NewGoodBean left, NewGoodBean right) {
+                        return (int) (getMoneyInt(right.getCurrencyPrice())-getMoneyInt(left.getCurrencyPrice()));
+                    }
+                });
+
+                break;
+            case I.SORT_BY_ADDTIME_DESC:
+                Collections.sort(mList, new Comparator<NewGoodBean>() {
+                    @Override
+                    public int compare(NewGoodBean left, NewGoodBean right) {
+                        return (int) (left.getAddTime()-right.getAddTime());
+                    }
+                });
+                break;
+            case I.SORT_BY_ADDTIME_ASC:
+                Collections.sort(mList, new Comparator<NewGoodBean>() {
+                    @Override
+                    public int compare(NewGoodBean left, NewGoodBean right) {
+                        return (int) (right.getAddTime()-left.getAddTime());
+                    }
+                });
+                break;
+        }
+
     }
 
+    private int getMoneyInt(String promotePrice) {
+        return Integer.valueOf(promotePrice.substring(1));
+    }
 
 
 }

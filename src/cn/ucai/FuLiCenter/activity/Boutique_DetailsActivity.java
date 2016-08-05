@@ -18,6 +18,7 @@ import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.adapter.XinPinAdapter;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
+import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
 import cn.ucai.FuLiCenter.widget.I;
@@ -34,6 +35,7 @@ public class Boutique_DetailsActivity extends BaseActivity {
     GridLayoutManager mGridLayoutManager;
     TextView mtv_hint;
     int BoutiqueId = 0;
+    String title;
     final static int PULL_DOWN = 1;
     final static int BUTTOM_DOWN = 0;
     int pageId=0;
@@ -96,6 +98,7 @@ public class Boutique_DetailsActivity extends BaseActivity {
 
     private void initData(final int DOWN_CODE) {
         BoutiqueId = getIntent().getIntExtra(D.Boutique.KEY_ID, 0);
+
         final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(BoutiqueId))
@@ -128,6 +131,8 @@ public class Boutique_DetailsActivity extends BaseActivity {
     }
 
     private void initView() {
+        title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
+        BackUtils.ActivityBack(this,title);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);
         mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.boutique_srl_xinpin);
         mRecyclerView = (RecyclerView)findViewById(R.id.boutique_rl_xinpin);

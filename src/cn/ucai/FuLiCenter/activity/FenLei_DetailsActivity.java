@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import cn.ucai.FuLiCenter.widget.I;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FenLei_DetailsActivity extends BaseActivity {
+public class FenLei_DetailsActivity extends BaseActivity implements View.OnClickListener{
     FenLei_DetailsActivity mContext;
     List<NewGoodBean> mlist;
     SwipeRefreshLayout mSwipeRefreshLayout;
@@ -47,7 +48,7 @@ public class FenLei_DetailsActivity extends BaseActivity {
     Button mButton_AddTime;
     boolean mMoney_Desc;    //价格的降序
     boolean mAddTime_Desc;  //上架时间的降序
-
+   // ImageView miv_back;
     public FenLei_DetailsActivity() {
         // Required empty public constructor
     }
@@ -66,9 +67,9 @@ public class FenLei_DetailsActivity extends BaseActivity {
 
 
     private void setListener() {
-
-        mButton_Money.setOnClickListener( new listener());
-        mButton_AddTime.setOnClickListener( new listener());
+        BackUtils.ActivityBack(this);
+        mButton_Money.setOnClickListener(this);
+        mButton_AddTime.setOnClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -138,49 +139,47 @@ public class FenLei_DetailsActivity extends BaseActivity {
                 });
     }
 
-
-    class listener implements View.OnClickListener{
-        @Override
-        public void onClick(View view) {
-            Drawable image;
-            switch (view.getId()){
-                case R.id.btn_money:
-                    if(mAddTime_Desc){
-                        image = getResources().getDrawable(R.drawable.arrow_order_up);
-                        mXinPinAdapter.Sory(I.SORT_BY_PRICE_ASC);
-                    }else{
-                        image = getResources().getDrawable(R.drawable.arrow_order_down);
-                        mXinPinAdapter.Sory(I.SORT_BY_PRICE_DESC);
-                    }
-                    mAddTime_Desc = !mAddTime_Desc;
-                    image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
-                    mButton_Money.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
-                    break;
-                case R.id.btn_addtime:
-                    if(mMoney_Desc){
-                        image = getResources().getDrawable(R.drawable.arrow_order_up);
-                        mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_ASC);
-                    }else{
-                        image = getResources().getDrawable(R.drawable.arrow_order_down);
-                        mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_DESC);
-                    }
-                    mMoney_Desc = !mMoney_Desc;
-                    image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
-                    mButton_Money.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
-                    break;
-
-            }
+    @Override
+    public void onClick(View view) {
+        Drawable image;
+        switch (view.getId()){
+            case R.id.btn_money:
+                if(mAddTime_Desc){
+                    image = getResources().getDrawable(R.drawable.arrow_order_up);
+                    mXinPinAdapter.Sory(I.SORT_BY_PRICE_ASC);
+                }else{
+                    image = getResources().getDrawable(R.drawable.arrow_order_down);
+                    mXinPinAdapter.Sory(I.SORT_BY_PRICE_DESC);
+                }
+                mAddTime_Desc = !mAddTime_Desc;
+                image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
+                mButton_Money.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
+                break;
+            case R.id.btn_addtime:
+                if(mMoney_Desc){
+                    image = getResources().getDrawable(R.drawable.arrow_order_up);
+                    mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_ASC);
+                }else{
+                    image = getResources().getDrawable(R.drawable.arrow_order_down);
+                    mXinPinAdapter.Sory(I.SORT_BY_ADDTIME_DESC);
+                }
+                mMoney_Desc = !mMoney_Desc;
+                image.setBounds(0,0,image.getIntrinsicWidth(),image.getIntrinsicHeight());
+                mButton_AddTime.setCompoundDrawablesWithIntrinsicBounds(null,null,image,null);
+                break;
         }
     }
+
 
     private void initView() {
      /*   title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);*/
+       // miv_back = (ImageView) findViewById(R.id.iv_back);
         mButton_Money = (Button) findViewById(R.id.btn_money);
         mButton_AddTime = (Button) findViewById(R.id.btn_addtime);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);
-        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.boutique_srl_fenlei);
-        mRecyclerView = (RecyclerView)findViewById(R.id.boutique_rl_fenlei);
+        mSwipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.boutique_srl_xinpin);
+        mRecyclerView = (RecyclerView)findViewById(R.id.boutique_rl_xinpin);
         mGridLayoutManager = new GridLayoutManager(mContext, I.COLUM_NUM);
         mGridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mGridLayoutManager);

@@ -24,6 +24,7 @@ import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
+import cn.ucai.FuLiCenter.view.CatChildFilterButton;
 import cn.ucai.FuLiCenter.widget.I;
 
 /**
@@ -48,6 +49,8 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
     Button mButton_AddTime;
     boolean mMoney_Desc;    //价格的降序
     boolean mAddTime_Desc;  //上架时间的降序
+    CatChildFilterButton mCatChildFilterButton;
+    String name;
    // ImageView miv_back;
     public FenLei_DetailsActivity() {
         // Required empty public constructor
@@ -90,10 +93,8 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 Log.i("main", "recyclerView.SCROLL_STATE_IDLE=" + newState + "   last==" + last + "  ismore=" + ismore+"    First="+first);
-                if(newState==recyclerView.SCROLL_STATE_IDLE&&last==mXinPinAdapter.getItemCount()-1&&ismore){
-                    pageId+=I.PAGE_SIZE_DEFAULT;
-                    initData(PULL_DOWN);
-                }
+                mXinPinAdapter.setFooter("没有更多数据加载！");
+
             }
 
             @Override
@@ -109,7 +110,7 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
         BoutiqueId = getIntent().getIntExtra(I.NewAndBoutiqueGood.CAT_ID, 0);
 
         final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
+        utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(BoutiqueId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
@@ -175,6 +176,10 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
      /*   title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);*/
        // miv_back = (ImageView) findViewById(R.id.iv_back);
+        name = getIntent().getStringExtra(I.CategoryChild.NAME);
+        Log.e("main", "name=" + name);
+        mCatChildFilterButton = (CatChildFilterButton) findViewById(R.id.btnCatChildFilter);
+        mCatChildFilterButton.setText(name);
         mButton_Money = (Button) findViewById(R.id.btn_money);
         mButton_AddTime = (Button) findViewById(R.id.btn_addtime);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);

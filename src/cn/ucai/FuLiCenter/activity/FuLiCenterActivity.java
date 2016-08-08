@@ -109,12 +109,31 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         startActivityForResult(new Intent(this,LoginActivity.class),LOGIN_CODE);
     }
 
-    @Override
+
+
+     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==LOGIN_CODE){
-            index = 0;
-            setShowFragment();
+            if(DemoHXSDKHelper.getInstance().isLogined()){
+                index = 4;
+            }else{
+                index = currentIndex;
+                setShowFragment();
+            }
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+
+        }else{
+            if(index==4){
+                index = 0;
+                setShowFragment();
+            }
         }
     }
 
@@ -125,11 +144,11 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
                 trx.add(R.id.rela_layout, fragment[index]);
             }
             trx.hide(fragment[currentIndex]).show(fragment[index]).commit();
-            Log.i("main", "index=" + index);
-            rbArr[index].setChecked(true);
-            rbArr[currentIndex].setChecked(false);
-            currentIndex = index;
+            Log.i("main", "index=" + index+"    currentIndex="+currentIndex);
         }
+        rbArr[index].setChecked(true);
+        rbArr[currentIndex].setChecked(false);
+        currentIndex = index;
     }
 }
 

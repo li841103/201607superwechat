@@ -28,7 +28,16 @@ import cn.ucai.FuLiCenter.bean.MemberUserAvatar;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 
 public class FuLiCenterApplication extends Application {
+	public int getCollectcount() {
+		return collectcount;
+	}
 
+	public void setCollectcount(int collectcount) {
+		this.collectcount = collectcount;
+	}
+
+	//当前用户的收藏数量
+	public int collectcount;
 	public FuLiCenterApplication() {
 	}
 

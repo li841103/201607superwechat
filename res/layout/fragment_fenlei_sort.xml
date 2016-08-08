@@ -4,7 +4,23 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <include layout="@layout/fenlei_title"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <include layout="@layout/fenlei_title"/>
+        <cn.ucai.FuLiCenter.view.CatChildFilterButton
+            android:id="@+id/btnCatChildFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/arrow2_up"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:text="分类"/>
+    </RelativeLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -30,7 +46,6 @@
             android:drawableRight="@drawable/arrow_order_up"
             android:paddingRight="10dp"
           />
-
     </LinearLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/boutique_srl_xinpin"
@@ -52,7 +67,6 @@
                 android:id="@+id/boutique_rl_xinpin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
             </android.support.v7.widget.RecyclerView>
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

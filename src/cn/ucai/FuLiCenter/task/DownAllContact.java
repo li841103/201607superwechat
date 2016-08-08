@@ -38,14 +38,17 @@ public class DownAllContact {
                     @Override
                     public void onSuccess(String s) {
                         Result result = Utils.getListResultFromJson(s, UserAvatar.class);
-                        List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
-                        if (list != null && list.size() > 0) {
-                            FuLiCenterApplication.getInstance().setUserAvatars(list);
-                            Map<String, UserAvatar> map = FuLiCenterApplication.getInstance().getStringUserAvatarMap();
-                            for(UserAvatar u:list){
-                                map.put(u.getMUserName(), u);
+                        if(result!=null) {
+                            List<UserAvatar> list = (List<UserAvatar>) result.getRetData();
+                            if (list != null && list.size() > 0) {
+                                FuLiCenterApplication.getInstance().setUserAvatars(list);
+                                Map<String, UserAvatar> map = FuLiCenterApplication.getInstance().getStringUserAvatarMap();
+                                for (UserAvatar u : list) {
+                                    map.put(u.getMUserName(), u);
+                                }
+                                context.sendStickyBroadcast(new Intent("update_contact_list"));
                             }
-                            context.sendStickyBroadcast(new Intent("update_contact_list"));                        }
+                        }
                     }
 
                     @Override

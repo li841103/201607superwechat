@@ -78,13 +78,15 @@
             android:windowSoftInputMode="adjustResize|stateVisible">
         </activity>
 
-        <!-- 注册 -->
+
+        <!-- 设置 -->
+
         <activity
-            android:name="cn.ucai.FuLiCenter.activity.RegisterActivity"
+            android:name="cn.ucai.FuLiCenter.activity.SettingsActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide" 
-            android:windowSoftInputMode="adjustResize|stateVisible">
+            android:theme="@style/horizontal_slide">
         </activity>
+
         <!--商品详情 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.shangpinxiangqingActivity"
@@ -97,6 +99,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
         </activity>
+
+
         <!--精品二级页面 -->
         <activity
             android:name="cn.ucai.FuLiCenter.activity.Boutique_DetailsActivity"

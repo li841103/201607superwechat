@@ -20,6 +20,7 @@ import java.util.List;
 import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.adapter.XinPinAdapter;
+import cn.ucai.FuLiCenter.bean.CategoryChildBean;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
@@ -50,6 +51,7 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
     boolean mMoney_Desc;    //价格的降序
     boolean mAddTime_Desc;  //上架时间的降序
     CatChildFilterButton mCatChildFilterButton;
+    ArrayList<CategoryChildBean> mCategoryChildBean;
     String name;
    // ImageView miv_back;
     public FenLei_DetailsActivity() {
@@ -104,10 +106,11 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
                 first=mGridLayoutManager.findFirstVisibleItemPosition();
             }
         });
+        mCatChildFilterButton.setOnCatFilterClickListener(name,mCategoryChildBean);
     }
 
     private void initData(final int DOWN_CODE) {
-        BoutiqueId = getIntent().getIntExtra(I.NewAndBoutiqueGood.CAT_ID, 0);
+        BoutiqueId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
 
         final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
@@ -176,6 +179,7 @@ public class FenLei_DetailsActivity extends BaseActivity implements View.OnClick
      /*   title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);*/
        // miv_back = (ImageView) findViewById(R.id.iv_back);
+        mCategoryChildBean = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra("childList");
         name = getIntent().getStringExtra(I.CategoryChild.NAME);
         Log.e("main", "name=" + name);
         mCatChildFilterButton = (CatChildFilterButton) findViewById(R.id.btnCatChildFilter);

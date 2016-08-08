@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.squareup.okhttp.internal.Util;
@@ -31,15 +33,19 @@ public class FenLeiFragment extends Fragment{
     List<CategoryGroupBean> mCategoryGroupBean;
     List<ArrayList<CategoryChildBean>> mCategoryChildBean;
     FenLeiAdapter mFenLeiAdapter;
+    int groupCount;
+
+    @Nullable
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContext = (FuLiCenterActivity) getContext();
         View layout = View.inflate(mContext, R.layout.fenlei_fragment, null);
         mCategoryGroupBean = new ArrayList<CategoryGroupBean>();
         mCategoryChildBean = new ArrayList<ArrayList<CategoryChildBean>>();
+        mFenLeiAdapter = new FenLeiAdapter(mContext,mCategoryGroupBean,mCategoryChildBean);
         initView(layout);
         initData();
+        return layout;
     }
 
     private void initData() {
@@ -54,7 +60,7 @@ public class FenLeiFragment extends Fragment{
                     for(CategoryGroupBean g:groupList){
                         mCategoryChildBean.add(new ArrayList<CategoryChildBean>());
                         DownSonData(i,g.getId());
-                        i+=1;
+                        i++;
                     }
 
                 }
@@ -76,12 +82,18 @@ public class FenLeiFragment extends Fragment{
                 .execute(new OkHttpUtils2.OnCompleteListener<CategoryChildBean[]>() {
                     @Override
                     public void onSuccess(CategoryChildBean[] result) {
+                        groupCount++;
                         if(result!=null){
-                            Log.i("main", "小类数据下载成功！i="+i);
+                            Log.i("main", "小类数据下载成功！i="+groupCount);
                                 ArrayList<CategoryChildBean> categoryChild = Utils.array2List(result);
+                            if(categoryChild!=null){
                                 mCategoryChildBean.set(i, categoryChild);
+                            }
+                            if(groupCount==mCategoryGroupBean.size()){
+                                Log.i("main", "去执行了addall方法");
                                 mFenLeiAdapter.addAll(mCategoryGroupBean,mCategoryChildBean);
                             }
+                        }
 
                     }
 
@@ -102,7 +114,6 @@ public class FenLeiFragment extends Fragment{
     private void initView(View layout) {
         mExpandableListView = (ExpandableListView) layout.findViewById(R.id.fenlei_elv);
         mExpandableListView.setGroupIndicator(null);
-        mFenLeiAdapter = new FenLeiAdapter(mContext,mCategoryGroupBean,mCategoryChildBean);
         mExpandableListView.setAdapter(mFenLeiAdapter);
     }
 }

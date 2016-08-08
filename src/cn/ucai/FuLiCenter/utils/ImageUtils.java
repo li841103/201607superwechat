@@ -60,9 +60,13 @@ public class ImageUtils {
 	}
 
 	public static void setFenLeiSonImage(Context context, String thmub, ImageView imageView){
-		String url = I.DOWNLOAD_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL + thmub;
+		String url = I.REQUEST_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL + thmub;
 		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
 	}
-	
-	
+
+
+	public static void setCategoryGroupImage(Context mContext, String imageUrl, ImageView mivGroupFindNormal) {
+		String url = I.REQUEST_DOWNLOAD_CATEGORY_GROUP_IMAGE_URL + imageUrl;
+		Picasso.with(mContext).load(url).placeholder(R.drawable.nopic).into(mivGroupFindNormal);
+	}
 }

@@ -33,6 +33,7 @@ import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.listener.OnSetAvatarListener;
+import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
 import cn.ucai.FuLiCenter.widget.I;
@@ -68,12 +69,12 @@ public class RegisterActivity extends BaseActivity {
 	}
 
 	private void setListener() {
-		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+		/*findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				finish();
 			}
-		});
+		});*/
 		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -99,7 +100,7 @@ public class RegisterActivity extends BaseActivity {
 	}
 
 	private void initView() {
-
+		BackUtils.ActivityBack(this);
 		userNameEditText = (EditText) findViewById(R.id.username);
 		userNickEditText = (EditText) findViewById(R.id.et_nick);
 		passwordEditText = (EditText) findViewById(R.id.password);

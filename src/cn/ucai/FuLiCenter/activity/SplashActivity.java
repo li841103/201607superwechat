@@ -62,7 +62,7 @@ public class SplashActivity extends BaseActivity {
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
 
-					/*String userName = FuLiCenterApplication.getInstance().getUserName();
+					String userName = FuLiCenterApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar userAvatar = dao.getUserAvatar(userName);
 					Log.i("main", "这是闪屏界面输出的信息，userAvatar的信息如下：" + userAvatar);
@@ -97,7 +97,7 @@ public class SplashActivity extends BaseActivity {
 						FuLiCenterApplication.getInstance().setUserAvatar(userAvatar);
 						FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 					}
-					new DownAllContact(SplashActivity.this).exec(userName);*/
+					new DownAllContact(SplashActivity.this).exec(userName);
 
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长

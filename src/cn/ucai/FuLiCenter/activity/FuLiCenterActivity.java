@@ -1,5 +1,6 @@
 package cn.ucai.FuLiCenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 
+import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
 
 /**
@@ -21,6 +23,8 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
     XinPinFragment mXinPinFragment;
     BoutiqueFragment mBoutiqueFragment;
     FenLeiFragment mFenLeiFragment;
+    PersonalCenterFragment mPersonalCenterFragment;
+    final static int LOGIN_CODE = 100;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         fenlei.setOnClickListener(this);
         gouwuche.setOnClickListener(this);
         me.setOnClickListener(this);
+
     }
 
 
@@ -48,6 +53,8 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         mXinPinFragment = new XinPinFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mFenLeiFragment = new FenLeiFragment();
+        mPersonalCenterFragment = new PersonalCenterFragment();
+
         rbArr = new RadioButton[5];
         rbArr[0] = xinpin;
         rbArr[1] = jingxuan;
@@ -58,6 +65,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         fragment[0] = mXinPinFragment;
         fragment[1] = mBoutiqueFragment;
         fragment[2] = mFenLeiFragment;
+        fragment[4] = mPersonalCenterFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.rela_layout,mXinPinFragment)
                 .add(R.id.rela_layout, mBoutiqueFragment)
@@ -85,11 +93,32 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
                 index = 3;
                 break;
             case R.id.me:
-                index = 4;
+                if(DemoHXSDKHelper.getInstance().isLogined()){
+                    index = 4;
+                }else{
+                    gotoLogin();
+                }
                 break;
         }
         rbArr[index].setChecked(true);
         rbArr[currentIndex].setChecked(false);
+        setShowFragment();
+    }
+
+    private void gotoLogin() {
+        startActivityForResult(new Intent(this,LoginActivity.class),LOGIN_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==LOGIN_CODE){
+            index = 0;
+            setShowFragment();
+        }
+    }
+
+    private void setShowFragment() {
         FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
         if (index != currentIndex) {
             if(!fragment[index].isAdded()){
@@ -97,7 +126,8 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
             }
             trx.hide(fragment[currentIndex]).show(fragment[index]).commit();
             Log.i("main", "index=" + index);
-//            trx.show(fragment[index]).commit();
+            rbArr[index].setChecked(true);
+            rbArr[currentIndex].setChecked(false);
             currentIndex = index;
         }
     }

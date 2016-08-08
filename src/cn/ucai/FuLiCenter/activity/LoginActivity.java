@@ -31,6 +31,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
@@ -50,6 +51,7 @@ import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.UserDao;
 import cn.ucai.FuLiCenter.domain.User;
 import cn.ucai.FuLiCenter.task.DownAllContact;
+import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.CommonUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
@@ -67,7 +69,6 @@ public class LoginActivity extends BaseActivity {
 	ProgressDialog pd;
 	private boolean progressShow;
 	private boolean autoLogin = false;
-
 	private String currentUsername;
 	private String currentPassword;
 
@@ -83,10 +84,9 @@ public class LoginActivity extends BaseActivity {
 			return;
 		}
 		setContentView(R.layout.activity_login);
-
 		usernameEditText = (EditText) findViewById(R.id.username);
 		passwordEditText = (EditText) findViewById(R.id.password);
-
+		BackUtils.ActivityBack(this, "账户登录");
 		// 如果用户名改变，清空密码
 		usernameEditText.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -276,10 +276,8 @@ public class LoginActivity extends BaseActivity {
             pd.dismiss();
         }
 		// 进入主页面
-		Intent intent = new Intent(LoginActivity.this,
-                MainActivity.class);
+		Intent intent = new Intent(LoginActivity.this, FuLiCenterActivity.class);
 		startActivity(intent);
-
 		finish();
 	}
 

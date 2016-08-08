@@ -50,14 +50,13 @@ public class PersonalCenterFragment extends Fragment{
         My_dingdan = (RelativeLayout) layout.findViewById(R.id.My_dingdan);
     }
     class setListenerclass implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
             if(DemoHXSDKHelper.getInstance().isLogined()){
                 switch (view.getId()){
                     case R.id.tv_sttings:
                     case R.id.default_avatar:
-                        startActivity(new Intent(mContext, SettingsActivity.class), null);
+                        startActivity(new Intent(mContext, SettingsActivity.class));
                         break;
                 }
             }

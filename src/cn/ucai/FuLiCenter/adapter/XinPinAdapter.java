@@ -2,6 +2,7 @@ package cn.ucai.FuLiCenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -47,6 +48,7 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.mcontext = mcontext;
         this.mList = new ArrayList<NewGoodBean>();
         this.mList.addAll(mList);
+        Sory(I.SORT_BY_PRICE_DESC);
     }
 
     @Override
@@ -140,11 +142,12 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public  void Sory(final int SORY_CODE){
         switch (SORY_CODE){
-
             case I.SORT_BY_PRICE_ASC:
                 Collections.sort(mList, new Comparator<NewGoodBean>() {
                     @Override
                     public int compare(NewGoodBean left, NewGoodBean right) {
+                        Log.e("main", "调用了按价格的升序排序方法"+left.getCurrencyPrice());
+                        notifyDataSetChanged();
                         return (int) (getMoneyInt(left.getCurrencyPrice())-getMoneyInt(right.getCurrencyPrice()));
                     }
                 });
@@ -153,15 +156,17 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Collections.sort(mList, new Comparator<NewGoodBean>() {
                     @Override
                     public int compare(NewGoodBean left, NewGoodBean right) {
+                        Log.e("main", "调用了按价格的降序排序方法"+left.getCurrencyPrice());
+                        notifyDataSetChanged();
                         return (int) (getMoneyInt(right.getCurrencyPrice())-getMoneyInt(left.getCurrencyPrice()));
                     }
                 });
-
                 break;
             case I.SORT_BY_ADDTIME_DESC:
                 Collections.sort(mList, new Comparator<NewGoodBean>() {
                     @Override
                     public int compare(NewGoodBean left, NewGoodBean right) {
+                        notifyDataSetChanged();
                         return (int) (left.getAddTime()-right.getAddTime());
                     }
                 });
@@ -170,6 +175,7 @@ public class XinPinAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 Collections.sort(mList, new Comparator<NewGoodBean>() {
                     @Override
                     public int compare(NewGoodBean left, NewGoodBean right) {
+                        notifyDataSetChanged();
                         return (int) (right.getAddTime()-left.getAddTime());
                     }
                 });

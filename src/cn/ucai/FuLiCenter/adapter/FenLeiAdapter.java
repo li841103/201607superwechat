@@ -28,9 +28,9 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
     Context mContext;
     List<CategoryGroupBean> mGroupList;  //大类的集合
     List<ArrayList<CategoryChildBean>>  mSonList; //小类的集合
-    RelativeLayout mrl;
 
-    public FenLeiAdapter(Context mcontext, List<CategoryGroupBean> mGroupList, List<ArrayList<CategoryChildBean>> mSonList) {
+    public FenLeiAdapter(Context mcontext, List<CategoryGroupBean> mGroupList,
+                         List<ArrayList<CategoryChildBean>> mSonList) {
         this.mContext = mcontext;
         this.mGroupList = new ArrayList<CategoryGroupBean>();
         this.mGroupList.addAll(mGroupList);
@@ -40,7 +40,7 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
 
     @Override
     public int getGroupCount() {
-        return mGroupList==null?0:mGroupList.size();
+        return mGroupList!=null?mGroupList.size():0;
     }
 
     @Override
@@ -50,12 +50,18 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
 
     @Override
     public CategoryGroupBean getGroup(int i) {
-        return mGroupList.get(i);
+        if(mGroupList!=null){
+            return mGroupList.get(i);
+        }
+        return null;
     }
 
     @Override
     public CategoryChildBean getChild(int i, int i1) {
-        return mSonList.get(i).get(i1);
+        if(mSonList.get(i)!=null&&mSonList.get(i).get(i1)!=null){
+            return mSonList.get(i).get(i1);
+        }
+        return null;
     }
 
     @Override
@@ -92,11 +98,14 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
         }else{
             holder.mivGroupExpand.setImageResource(R.drawable.expand_on);
         }
+        CategoryGroupBean group = getGroup(i);
+        ImageUtils.setCategoryGroupImage(mContext,group.getImageUrl(),holder.mivGroupFindNormal);
+        holder.mtvGroupName.setText(group.getName());
         return view;
     }
 
     @Override
-    public View getChildView(int groupPosition, int sonPosition, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(final int groupPosition, int sonPosition, boolean b, View view, ViewGroup viewGroup) {
         SonViewHolder holder = null;
         if(view==null){//第一次创建
             holder = new SonViewHolder();
@@ -116,7 +125,11 @@ public class FenLeiAdapter extends BaseExpandableListAdapter{
         holder.mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mContext.startActivity(new Intent(mContext,FenLei_DetailsActivity.class).putExtra(I.NewAndBoutiqueGood.CAT_ID,child.getId()));
+                mContext.startActivity(new Intent(mContext, FenLei_DetailsActivity.class)
+                        .putExtra(I.CategoryChild.CAT_ID, child.getId())
+                        .putExtra(I.CategoryChild.NAME, mGroupList.get(groupPosition).getName())
+                        .putExtra("childList", mSonList.get(groupPosition)));
+                Log.e("main", "执行了跳转方法！");
             }
         });
         return view;

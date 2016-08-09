@@ -98,7 +98,7 @@ public class CollectActivity extends BaseActivity {
     }
 
     private void initData(final int DOWN_CODE) {
-
+        BackUtils.ActivityBack(mContext, "收藏的宝贝");
         final OkHttpUtils2<CollectBean[]> utils = new OkHttpUtils2<CollectBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
                 .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())

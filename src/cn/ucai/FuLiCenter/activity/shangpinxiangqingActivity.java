@@ -22,6 +22,7 @@ import cn.ucai.FuLiCenter.bean.MessageBean;
 import cn.ucai.FuLiCenter.task.DownCollectCountTask;
 import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
+import cn.ucai.FuLiCenter.utils.Utils;
 import cn.ucai.FuLiCenter.view.FlowIndicator;
 import cn.ucai.FuLiCenter.view.SlideAutoLoopView;
 import cn.ucai.FuLiCenter.widget.I;
@@ -31,7 +32,7 @@ import cn.ucai.FuLiCenter.widget.I;
  */
 public class shangpinxiangqingActivity extends BaseActivity {
     Context mContext;
-    TextView mEnglish,mChese,mMoney;
+    TextView mEnglish,mChese,mMoney,mtvNum;
     SlideAutoLoopView mSlideAutoLoopView;
     FlowIndicator mFlowIndicator;
     GoodDetailsBean mGoodDetails;
@@ -207,6 +208,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
 
 
     private void initData() {
+        mtvNum.setText(String.valueOf(Utils.sumCartCount()));
         BackUtils.ActivityBack(shangpinxiangqingActivity.this);
         intExtra = getIntent().getIntExtra(D.GoodDetails.KEY_GOODS_ID, 0);
         OkHttpUtils2<GoodDetailsBean> utils = new OkHttpUtils2<GoodDetailsBean>();
@@ -267,6 +269,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
     }
 
     private void initView() {
+        mtvNum = (TextView) findViewById(R.id.tv_num);
         miv_share = (ImageView) findViewById(R.id.shangpin_title_share_nor);
         miv_soucang = (ImageView) findViewById(R.id.shangpin_title_collect);
         mEnglish = (TextView) findViewById(R.id.english_name);

@@ -9,7 +9,7 @@ import java.util.Arrays;
 /**
  * Created by Zhou on 2016/7/29.
  */
-public class GoodDetails implements Serializable {
+public class GoodDetailsBean implements Serializable {
 
     /**
      * id : 280

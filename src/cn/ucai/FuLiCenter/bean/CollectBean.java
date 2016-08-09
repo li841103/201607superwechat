@@ -2,6 +2,9 @@ package cn.ucai.FuLiCenter.bean;
 
 import java.io.Serializable;
 
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
+import cn.ucai.FuLiCenter.widget.I;
+
 /**
  * Created by Zhou on 2016/7/29.
  */
@@ -30,6 +33,7 @@ public class CollectBean implements Serializable {
      * goodsImg : http1.197.1.20/images/201507/1437108490034171398.jpg
      * addTime : 1442419200000
      */
+
 
     private int id;
     private String userName;

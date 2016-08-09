@@ -16,9 +16,8 @@ import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.R;
-import cn.ucai.FuLiCenter.adapter.CollectAdapter;
 import cn.ucai.FuLiCenter.bean.AlbumsBean;
-import cn.ucai.FuLiCenter.bean.GoodDetails;
+import cn.ucai.FuLiCenter.bean.GoodDetailsBean;
 import cn.ucai.FuLiCenter.bean.MessageBean;
 import cn.ucai.FuLiCenter.task.DownCollectCountTask;
 import cn.ucai.FuLiCenter.utils.BackUtils;
@@ -35,7 +34,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
     TextView mEnglish,mChese,mMoney;
     SlideAutoLoopView mSlideAutoLoopView;
     FlowIndicator mFlowIndicator;
-    GoodDetails mGoodDetails;
+    GoodDetailsBean mGoodDetails;
     WebView mWebView;
     int intExtra;
     boolean isSouCang;
@@ -112,15 +111,15 @@ public class shangpinxiangqingActivity extends BaseActivity {
     public void addSouCang(){
         OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
         utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
-                .addParam(I.Collect.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
-                .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodDetails.getGoodsId()))
-                .addParam(I.Collect.GOODS_NAME,mGoodDetails.getGoodsName())
-                .addParam(I.Collect.GOODS_ENGLISH_NAME,mGoodDetails.getGoodsEnglishName())
-                .addParam(I.Collect.GOODS_THUMB,mGoodDetails.getGoodsThumb())
-                .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
-                .addParam(I.Collect.ADD_TIME,String.valueOf(mGoodDetails.getAddTime()))
-                .targetClass(MessageBean.class)
-                .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                        .addParam(I.Collect.USER_NAME,FuLiCenterApplication.getInstance().getUserName())
+                        .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodDetails.getGoodsId()))
+                        .addParam(I.Collect.GOODS_NAME,mGoodDetails.getGoodsName())
+                        .addParam(I.Collect.GOODS_ENGLISH_NAME,mGoodDetails.getGoodsEnglishName())
+                        .addParam(I.Collect.GOODS_THUMB,mGoodDetails.getGoodsThumb())
+                        .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
+                        .addParam(I.Collect.ADD_TIME,String.valueOf(mGoodDetails.getAddTime()))
+                        .targetClass(MessageBean.class)
+                    .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
                     @Override
                     public void onSuccess(MessageBean result) {
                         if(result!=null&&result.isSuccess()){
@@ -210,14 +209,19 @@ public class shangpinxiangqingActivity extends BaseActivity {
     private void initData() {
         BackUtils.ActivityBack(shangpinxiangqingActivity.this);
         intExtra = getIntent().getIntExtra(D.GoodDetails.KEY_GOODS_ID, 0);
-        OkHttpUtils2<GoodDetails> utils = new OkHttpUtils2<GoodDetails>();
+        OkHttpUtils2<GoodDetailsBean> utils = new OkHttpUtils2<GoodDetailsBean>();
         utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
                 .addParam(D.GoodDetails.KEY_GOODS_ID,String.valueOf(intExtra))
-                .targetClass(GoodDetails.class)
-                .execute(new OkHttpUtils2.OnCompleteListener<GoodDetails>() {
+                .targetClass(GoodDetailsBean.class)
+                .execute(new OkHttpUtils2.OnCompleteListener<GoodDetailsBean>() {
                     @Override
-                    public void onSuccess(GoodDetails result) {
+                    public void onSuccess(GoodDetailsBean result) {
                         if(result!=null){
+                            if(DemoHXSDKHelper.getInstance().isLogined()){
+                                initDetailsActivity();
+                            }else{
+                                ImageCode(false);
+                            }
                             mGoodDetails = result;
                             setGoodDetails();
                         }else{
@@ -231,6 +235,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
                         finish();
                     }
                 });
+
 
     }
 

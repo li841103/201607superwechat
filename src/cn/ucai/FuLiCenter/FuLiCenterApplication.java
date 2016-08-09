@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import cn.ucai.FuLiCenter.bean.CartBean;
 import cn.ucai.FuLiCenter.bean.MemberUserAvatar;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 
@@ -37,9 +38,20 @@ public class FuLiCenterApplication extends Application {
 	}
 
 	//当前用户的收藏数量
+
+	public List<CartBean> getCartBeanList() {
+		return cartBeanList;
+	}
+
+	public void setCartBeanList(List<CartBean> cartBeanList) {
+		this.cartBeanList = cartBeanList;
+	}
+
 	public int collectcount;
 	public FuLiCenterApplication() {
 	}
+	//购物车的全局变量
+	private List<CartBean> cartBeanList = new ArrayList<CartBean>();
 
 	public Map<String, HashMap<String, MemberUserAvatar>> MemberMap = new HashMap<String, HashMap<String, MemberUserAvatar>>();
 

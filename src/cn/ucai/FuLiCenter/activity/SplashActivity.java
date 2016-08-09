@@ -19,6 +19,7 @@ import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.UserDao;
 
+import cn.ucai.FuLiCenter.task.DownAllCartTask;
 import cn.ucai.FuLiCenter.task.DownAllContact;
 import cn.ucai.FuLiCenter.task.DownCollectCountTask;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
@@ -100,6 +101,7 @@ public class SplashActivity extends BaseActivity {
 					}
 					new DownAllContact(SplashActivity.this).exec(userName);
 					new DownCollectCountTask(SplashActivity.this).exec(userName);
+					new DownAllCartTask(SplashActivity.this).exec(userName);
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
 					if (sleepTime - costTime > 0) {

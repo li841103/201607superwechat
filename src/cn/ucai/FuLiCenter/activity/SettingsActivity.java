@@ -359,6 +359,7 @@ public class SettingsActivity extends BaseActivity implements OnClickListener {
 						FuLiCenterApplication.getInstance().getStringUserAvatarMap().clear();
 						FuLiCenterApplication.getInstance().getUserAvatars().clear();
 						FuLiCenterApplication.getInstance().setUserAvatar(null);
+						FuLiCenterApplication.getInstance().getCartBeanList().clear();
 						pd.dismiss();
 						// 重新显示登陆页面
 						finish();

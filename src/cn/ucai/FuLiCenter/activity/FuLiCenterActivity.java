@@ -1,15 +1,20 @@
 package cn.ucai.FuLiCenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
+import cn.ucai.FuLiCenter.utils.Utils;
 
 /**
  * Created by Zhou on 2016/8/1.
@@ -18,13 +23,16 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
     RadioButton xinpin,jingxuan,fenlei,gouwuche,me;
     RadioButton[] rbArr;
     Fragment[] fragment;
+    TextView mtvHint;
     int index;
     int currentIndex;
     XinPinFragment mXinPinFragment;
     BoutiqueFragment mBoutiqueFragment;
     FenLeiFragment mFenLeiFragment;
     PersonalCenterFragment mPersonalCenterFragment;
+    CartFragment mCartFragment;
     final static int LOGIN_CODE = 100;
+    updateCartNumReceiver mReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +43,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
     }
 
     private void setListener() {
+        setUpdateCartListener();
         xinpin.setOnClickListener(this);
         jingxuan.setOnClickListener(this);
         fenlei.setOnClickListener(this);
@@ -45,6 +54,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
 
 
     private void initView() {
+        mtvHint = (TextView) findViewById(R.id.tvCartHint);
         xinpin = (RadioButton) findViewById(R.id.xinpin);
         jingxuan = (RadioButton) findViewById(R.id.jingxuan);
         fenlei = (RadioButton) findViewById(R.id.fenlei);
@@ -54,7 +64,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         mBoutiqueFragment = new BoutiqueFragment();
         mFenLeiFragment = new FenLeiFragment();
         mPersonalCenterFragment = new PersonalCenterFragment();
-
+        mCartFragment = new CartFragment();
         rbArr = new RadioButton[5];
         rbArr[0] = xinpin;
         rbArr[1] = jingxuan;
@@ -65,6 +75,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         fragment[0] = mXinPinFragment;
         fragment[1] = mBoutiqueFragment;
         fragment[2] = mFenLeiFragment;
+        fragment[3] = mCartFragment;
         fragment[4] = mPersonalCenterFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.rela_layout,mXinPinFragment)
@@ -149,6 +160,38 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
         rbArr[index].setChecked(true);
         rbArr[currentIndex].setChecked(false);
         currentIndex = index;
+    }
+
+    class updateCartNumReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateCartNum();
+        }
+    }
+    private void setUpdateCartListener(){
+        mReceiver = new updateCartNumReceiver();
+        IntentFilter intentFilter = new IntentFilter("update_cart_list");
+        registerReceiver(mReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mReceiver!=null){
+            unregisterReceiver(mReceiver);
+        }
+    }
+
+    private void updateCartNum() {
+        int count = Utils.sumCartCount();
+        if(!DemoHXSDKHelper.getInstance().isLogined()||count==0) {
+            mtvHint.setText(String.valueOf(0));
+            mtvHint.setVisibility(View.GONE);
+        }else{
+            mtvHint.setText(String.valueOf(count));
+            mtvHint.setVisibility(View.VISIBLE);
+        }
     }
 }
 

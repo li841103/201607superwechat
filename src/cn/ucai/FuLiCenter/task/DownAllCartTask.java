@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.task;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class DownAllCartTask {
         this.context = context;
     }
 
-    public void exec(String username,final int GoodsId){
+    public void exec(String username){
         Log.i("main", "用户名：" + username);
         final OkHttpUtils2<CartBean[]> utils = new OkHttpUtils2<CartBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_CARTS)
@@ -45,7 +46,7 @@ public class DownAllCartTask {
                             if(!FuLiCenterCartBeanList.contains(cart)){
                                 OkHttpUtils2<GoodDetailsBean> utils = new OkHttpUtils2<GoodDetailsBean>();
                                 utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
-                                        .addParam(D.GoodDetails.KEY_GOODS_ID,String.valueOf(GoodsId))
+                                        .addParam(D.GoodDetails.KEY_GOODS_ID,String.valueOf(cart.getGoodsId()))
                                         .targetClass(GoodDetailsBean.class)
                                         .execute(new OkHttpUtils2.OnCompleteListener<GoodDetailsBean>() {
                                             @Override
@@ -66,7 +67,7 @@ public class DownAllCartTask {
                                 FuLiCenterCartBeanList.get(FuLiCenterCartBeanList.indexOf(cart)).setCount(cart.getCount());
                             }
                         }
-
+                        context.sendStickyBroadcast(new Intent("update_cart_list"));
                     }
 
                     @Override

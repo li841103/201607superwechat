@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
     </RelativeLayout>
+
     <RadioGroup
         android:background="@color/bottom_bar_taobao_bg"
         android:id="@+id/rg_group"
@@ -50,17 +51,36 @@
             android:textSize="20sp"
             android:drawableTop="@drawable/selector_menu_item_category"
             android:button="@null"/>
-        <RadioButton
-            android:id="@+id/gouwuche"
-            android:textColor="#000"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:text="购物车"
-            android:textSize="20sp"
-            android:drawableTop="@drawable/selector_menu_item_cart"
-            android:button="@null"/>
+            android:layout_weight="1">
+            <RadioButton
+
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/gouwuche"
+                android:textColor="#000"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="购物车"
+                android:textSize="20sp"
+                android:drawableTop="@drawable/selector_menu_item_cart"
+                android:button="@null"/>
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/tvCartHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cart_hint"
+                android:padding="2dp"
+                android:text="10"
+                android:textColor="#fff"
+                android:visibility="gone"
+                />
+        </RelativeLayout>
+
+
 
         <RadioButton
             android:id="@+id/me"

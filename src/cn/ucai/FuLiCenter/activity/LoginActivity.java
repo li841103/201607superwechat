@@ -50,6 +50,7 @@ import cn.ucai.FuLiCenter.bean.Result;
 import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.UserDao;
 import cn.ucai.FuLiCenter.domain.User;
+import cn.ucai.FuLiCenter.task.DownAllCartTask;
 import cn.ucai.FuLiCenter.task.DownAllContact;
 import cn.ucai.FuLiCenter.task.DownCollectCountTask;
 import cn.ucai.FuLiCenter.utils.BackUtils;
@@ -245,6 +246,7 @@ public class LoginActivity extends BaseActivity {
 		FuLiCenterApplication.getInstance().setUserAvatar(user);
 		FuLiCenterApplication.currentUserNick=user.getMUserNick();
 		new DownAllContact(LoginActivity.this).exec(currentUsername);
+		new DownAllCartTask(LoginActivity.this).exec(currentUsername);
 		new DownCollectCountTask(LoginActivity.this).exec(currentUsername);
 
 

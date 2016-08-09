@@ -125,7 +125,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
                         if(result!=null&&result.isSuccess()){
                             isSouCang = true;
                             ImageCode(isSouCang);
-                            new DownCollectCountTask();
+                            new DownCollectCountTask(mContext).exec(FuLiCenterApplication.getInstance().getUserName());
                             Toast.makeText(mContext, "添加收藏成功！", Toast.LENGTH_LONG).show();
 
                         }else{
@@ -152,7 +152,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
                     @Override
                     public void onSuccess(MessageBean result) {
                         if(result!=null&&result.isSuccess()){
-                            new DownCollectCountTask().exec(FuLiCenterApplication.getInstance().getUserName());
+                            new DownCollectCountTask(mContext).exec(FuLiCenterApplication.getInstance().getUserName());
                             Toast.makeText(mContext,"删除成功",Toast.LENGTH_LONG).show();
                         }else{
                             Toast.makeText(mContext,"删除失败",Toast.LENGTH_LONG).show();

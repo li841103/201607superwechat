@@ -108,7 +108,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     if(result!=null&&result.isSuccess()){
                                         mList.remove(collect);
                                         notifyDataSetChanged();
-                                        new DownCollectCountTask().exec(FuLiCenterApplication.getInstance().getUserName());
+                                        new DownCollectCountTask(mcontext).exec(FuLiCenterApplication.getInstance().getUserName());
                                         Toast.makeText(mcontext,"删除成功",Toast.LENGTH_LONG).show();
                                     }else{
                                         Toast.makeText(mcontext,"删除失败",Toast.LENGTH_LONG).show();

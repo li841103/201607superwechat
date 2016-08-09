@@ -9,14 +9,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.D;
+import cn.ucai.FuLiCenter.DemoHXSDKHelper;
+import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.adapter.XinPinAdapter;
+import cn.ucai.FuLiCenter.bean.MessageBean;
 import cn.ucai.FuLiCenter.bean.NewGoodBean;
 import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
@@ -33,6 +37,7 @@ public class Boutique_DetailsActivity extends BaseActivity {
     RecyclerView mRecyclerView;
     XinPinAdapter mXinPinAdapter;
     GridLayoutManager mGridLayoutManager;
+    ImageView miv_soucang;
     TextView mtv_hint;
     int BoutiqueId = 0;
     String title;
@@ -56,9 +61,31 @@ public class Boutique_DetailsActivity extends BaseActivity {
         initView();
         initData(BUTTOM_DOWN);
         setListener();
-
+        initDetailsActivity();
     }
 
+    private void initDetailsActivity() {
+        if(DemoHXSDKHelper.getInstance().isLogined()){
+            OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+            utils.setRequestUrl(I.REQUEST_IS_COLLECT)
+                    .addParam(I.Collect.GOODS_ID,String.valueOf(BoutiqueId))
+                    .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+                    .targetClass(MessageBean.class)
+                    .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if(result!=null&&result.isSuccess()){
+                                miv_soucang.setImageResource(R.drawable.bg_collect_out);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+        }
+    }
 
 
     private void setListener() {
@@ -131,6 +158,7 @@ public class Boutique_DetailsActivity extends BaseActivity {
     }
 
     private void initView() {
+        miv_soucang = (ImageView) findViewById(R.id.shangpin_title_collect);
         title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);

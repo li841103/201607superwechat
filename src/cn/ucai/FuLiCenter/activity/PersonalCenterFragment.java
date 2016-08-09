@@ -27,6 +27,7 @@ public class PersonalCenterFragment extends Fragment{
     ImageView iv_msg,iv_avatar;
     TextView tv_sttings,tv_username,shoucangNum;
     RelativeLayout rl_soucang_baobei,rl_soucang_dianpu,rl_zhuji,My_dingdan;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PersonalCenterFragment extends Fragment{
         setListenerclass listener = new setListenerclass();
         iv_avatar.setOnClickListener(listener);
         tv_sttings.setOnClickListener(listener);
+        rl_soucang_baobei.setOnClickListener(listener);
         updateCollectCountListener();
     }
 
@@ -71,6 +73,9 @@ public class PersonalCenterFragment extends Fragment{
                     case R.id.tv_sttings:
                     case R.id.default_avatar:
                         startActivity(new Intent(mContext, SettingsActivity.class));
+                        break;
+                    case R.id.rl_soucang_baobei:
+                        startActivity(new Intent(mContext,CollectActivity.class));
                         break;
                 }
             }

@@ -99,11 +99,9 @@ public class UserUtils {
 		StringBuilder sb = new StringBuilder();
 		sb.append(I.SERVER_ROOT).append(I.QUESTION).append(I.KEY_REQUEST).append(I.EQUAL)
 				.append(I.REQUEST_DOWNLOAD_AVATAR)
-				.append(I.ALT).append(I.NAME_OR_HXID)
-				.append(I.EQUAL).append(username)
 				.append(I.ALT).append(I.AVATAR_TYPE)
 				.append(I.EQUAL)
-				.append(I.AVATAR_TYPE_USER_PATH);
+				.append(username);
 
 		Log.i("main", sb.toString());
 		return sb.toString();
@@ -183,17 +181,13 @@ public class UserUtils {
 
 	public static void setAppCurrentUserNick(TextView textView){
 		String userName = FuLiCenterApplication.getInstance().getUserName();
-		User user = UserUtils.getUserInfo(userName);
-		if(user != null){
-			if(user.getNick()!=null){
-				textView.setText(user.getNick());
-			}else{
-				textView.setText(user.getUsername());
-			}
-		}else{
-			textView.setText(user.getUsername());
+		String userNick = FuLiCenterApplication.getCurrentUserNick();
 
-		}
+		if(userNick!= null){
+				textView.setText(userNick);
+			}else{
+				textView.setText(userName);
+			}
 	}
     
     /**

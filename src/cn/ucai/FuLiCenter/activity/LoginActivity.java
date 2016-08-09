@@ -51,6 +51,7 @@ import cn.ucai.FuLiCenter.bean.UserAvatar;
 import cn.ucai.FuLiCenter.db.UserDao;
 import cn.ucai.FuLiCenter.domain.User;
 import cn.ucai.FuLiCenter.task.DownAllContact;
+import cn.ucai.FuLiCenter.task.DownCollectCountTask;
 import cn.ucai.FuLiCenter.utils.BackUtils;
 import cn.ucai.FuLiCenter.utils.CommonUtils;
 import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
@@ -212,8 +213,7 @@ public class LoginActivity extends BaseActivity {
 	private void UpdateUserAvatar() {
 		final OkHttpUtils2<Message> utils = new OkHttpUtils2<Message>();
 		utils.setRequestUrl(I.REQUEST_DOWNLOAD_AVATAR)
-				.addParam(I.NAME_OR_HXID,currentUsername)
-				.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+				.addParam(I.AVATAR_TYPE,currentUsername)
 				.targetClass(Message.class)
 				.doInBackground(new Callback() {
 					@Override
@@ -245,6 +245,7 @@ public class LoginActivity extends BaseActivity {
 		FuLiCenterApplication.getInstance().setUserAvatar(user);
 		FuLiCenterApplication.currentUserNick=user.getMUserNick();
 		new DownAllContact(LoginActivity.this).exec(currentUsername);
+		new DownCollectCountTask(LoginActivity.this).exec(currentUsername);
 
 
 		try {

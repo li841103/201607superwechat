@@ -61,31 +61,9 @@ public class Boutique_DetailsActivity extends BaseActivity {
         initView();
         initData(BUTTOM_DOWN);
         setListener();
-        initDetailsActivity();
+
     }
 
-    private void initDetailsActivity() {
-        if(DemoHXSDKHelper.getInstance().isLogined()){
-            OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
-            utils.setRequestUrl(I.REQUEST_IS_COLLECT)
-                    .addParam(I.Collect.GOODS_ID,String.valueOf(BoutiqueId))
-                    .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
-                    .targetClass(MessageBean.class)
-                    .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
-                        @Override
-                        public void onSuccess(MessageBean result) {
-                            if(result!=null&&result.isSuccess()){
-                                miv_soucang.setImageResource(R.drawable.bg_collect_out);
-                            }
-                        }
-
-                        @Override
-                        public void onError(String error) {
-
-                        }
-                    });
-        }
-    }
 
 
     private void setListener() {
@@ -124,8 +102,8 @@ public class Boutique_DetailsActivity extends BaseActivity {
     }
 
     private void initData(final int DOWN_CODE) {
+        BackUtils.ActivityBack(mContext);
         BoutiqueId = getIntent().getIntExtra(D.Boutique.KEY_ID, 0);
-
         final OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(BoutiqueId))
@@ -158,7 +136,6 @@ public class Boutique_DetailsActivity extends BaseActivity {
     }
 
     private void initView() {
-        miv_soucang = (ImageView) findViewById(R.id.shangpin_title_collect);
         title=getIntent().getStringExtra(D.Boutique.KEY_NAME);
         BackUtils.ActivityBack(this,title);
         mtv_hint = (TextView)findViewById(R.id.boutique_refresh_hint);

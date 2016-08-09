@@ -29,6 +29,7 @@
         android:layout_centerVertical="true"
         android:padding="5dp"/>
     <ImageView
+
         android:layout_margin="10dp"
         android:id="@+id/shangpin_title_share_nor"
         android:layout_width="wrap_content"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -54,7 +55,6 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.mcontext = mcontext;
         this.mList = new ArrayList<CollectBean>();
         this.mList.addAll(mList);
-        
     }
 
     @Override
@@ -82,12 +82,18 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.i("main", "xinpingonBindViewHolder");
+
         if(holder instanceof CollectViewHolder){
             final CollectBean collect = mList.get(position);
             mCollectViewHolder = (CollectViewHolder) holder;
             mCollectViewHolder.mmtvDesc.setText(collect.getGoodsName());
             ImageUtils.setXinPinImage(mcontext,collect.getGoodsThumb(),mCollectViewHolder.mmivImage);
+            mCollectViewHolder.mrl_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mcontext.startActivity(new Intent(mcontext, shangpinxiangqingActivity.class).putExtra(D.GoodDetails.KEY_GOODS_ID,collect.getGoodsId()));
+                }
+            });
             mCollectViewHolder.mdelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -126,7 +132,7 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mList==null?0:mList.size();
+        return mList==null?0:mList.size()+1;
     }
 
     public void initData(ArrayList<CollectBean> arr,int DOWN_CODE) {
@@ -146,9 +152,10 @@ public class CollectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     class CollectViewHolder extends RecyclerView.ViewHolder{
         ImageView mmivImage,mdelete;
         TextView mmtvDesc;
-
+        RelativeLayout mrl_layout;
         public CollectViewHolder(View itemView) {
             super(itemView);
+            mrl_layout = (RelativeLayout) itemView.findViewById(R.id.rl_layout_shoucang);
             mmtvDesc= (TextView) itemView.findViewById(R.id.tvDesc);
             mmivImage = (ImageView) itemView.findViewById(R.id.ivImage);
             mdelete = (ImageView) itemView.findViewById(R.id.delete);

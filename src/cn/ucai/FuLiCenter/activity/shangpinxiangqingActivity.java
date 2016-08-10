@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
     SlideAutoLoopView mSlideAutoLoopView;
     FlowIndicator mFlowIndicator;
     GoodDetailsBean mGoodDetails;
+    RelativeLayout mrlcart;
     WebView mWebView;
     int intExtra;
     boolean isSouCang;
@@ -75,6 +77,12 @@ public class shangpinxiangqingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 showShare();
+            }
+        });
+        mrlcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }
@@ -269,6 +277,7 @@ public class shangpinxiangqingActivity extends BaseActivity {
     }
 
     private void initView() {
+        mrlcart = (RelativeLayout) findViewById(R.id.rl_cart);
         mtvNum = (TextView) findViewById(R.id.tv_num);
         miv_share = (ImageView) findViewById(R.id.shangpin_title_share_nor);
         miv_soucang = (ImageView) findViewById(R.id.shangpin_title_collect);

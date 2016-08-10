@@ -146,6 +146,7 @@ public class FuLiCenterActivity extends BaseActivity implements View.OnClickList
                 setShowFragment();
             }
         }
+        updateCartNum();
     }
 
     private void setShowFragment() {

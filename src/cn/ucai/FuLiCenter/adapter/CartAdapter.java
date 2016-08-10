@@ -81,7 +81,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mCartViewHolder.isCheckBox.setChecked(true);
             ImageUtils.setBoutiqueImage(mcontext,goods.getGoodsThumb(),mCartViewHolder.mivImage);
             mCartViewHolder.mtv_name.setText(goods.getGoodsName());
-            mCartViewHolder.mtv_num.setText("(1)");
+            mCartViewHolder.mtv_num.setText("("+String.valueOf(cartBean.getCount())+")");
             mCartViewHolder.mtv_money.setText(goods.getCurrencyPrice());
         }
         if(holder instanceof FootViewHolder){
@@ -92,7 +92,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList==null?1:mList.size()+1;
+        return mList==null?1:mList.size();
     }
 
     public void initData(ArrayList<CartBean> arr,int DOWN_CODE) {

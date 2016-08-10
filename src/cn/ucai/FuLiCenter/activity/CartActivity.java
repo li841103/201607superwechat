@@ -31,40 +31,43 @@ import cn.ucai.FuLiCenter.widget.I;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CartFragment extends Fragment {
-    FuLiCenterActivity mContext;
+public class CartActivity extends BaseActivity {
+    CartActivity mContext;
     ArrayList<CartBean> mlist= (ArrayList<CartBean>) FuLiCenterApplication.getInstance().getCartBeanList();
     RecyclerView mRecyclerView;
     CartAdapter mCartAdapter;
     LinearLayoutManager mLinearLayoutManager;
-    TextView mtv_Total,mtv_Save;
+    TextView mtv_Total,mtv_Save,mtv_Num;
     Button mbtn_Purchase;
+    Button mtn_reduce,mtn_add;
 
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.cart_fragment, null, false);
-        mContext=(FuLiCenterActivity)getContext();
-        initView(view);
+    protected void onCreate(Bundle arg0) {
+        super.onCreate(arg0);
+        setContentView(R.layout.cart_fragment);
+        mContext=this;
+        initView();
         initData();
-        return view;
-}
+    }
+
+
 
     private void initData() {
         mCartAdapter.initData(mlist,0);
     }
 
-    public CartFragment() {
-        // Required empty public constructor
-    }
 
 
 
-    private void initView(View view) {
-        mtv_Total = (TextView) view.findViewById(R.id.tv_Total);
-        mtv_Save = (TextView) view.findViewById(R.id.tv_save);
-        mbtn_Purchase = (Button) view.findViewById(R.id.btn_purchase);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.cart_rlv);
+    private void initView() {
+        mtv_Num = (TextView) findViewById(R.id.tv_num);
+        mtn_reduce = (Button) findViewById(R.id.tv_reduce);
+        mtn_add = (Button) findViewById(R.id.tv_add);
+        mtv_Total = (TextView) findViewById(R.id.tv_Total);
+        mtv_Save = (TextView) findViewById(R.id.tv_save);
+        mbtn_Purchase = (Button) findViewById(R.id.btn_purchase);
+        mRecyclerView = (RecyclerView) findViewById(R.id.cart_rlv);
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);

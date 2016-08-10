@@ -1,5 +1,6 @@
 package cn.ucai.FuLiCenter.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -13,16 +14,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.okhttp.internal.Util;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.D;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.activity.Boutique_DetailsActivity;
+import cn.ucai.FuLiCenter.activity.CartActivity;
+import cn.ucai.FuLiCenter.activity.CartFragment;
 import cn.ucai.FuLiCenter.bean.BoutiqueBean;
 import cn.ucai.FuLiCenter.bean.CartBean;
 import cn.ucai.FuLiCenter.bean.GoodDetailsBean;
 import cn.ucai.FuLiCenter.utils.ImageUtils;
+import cn.ucai.FuLiCenter.utils.Utils;
 import cn.ucai.FuLiCenter.widget.I;
 
 
@@ -30,33 +36,32 @@ import cn.ucai.FuLiCenter.widget.I;
  * Created by Zhou on 2016/8/1.
  */
 public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    Context mcontext;
+    Activity mcontext;
     List<CartBean> mList;
     CartViewHolder mCartViewHolder;
     FootViewHolder mFootViewHolder;
     String footer;
+    int Total;
+
+
+
 
 
     public void setFooter(String footer) {
         this.footer = footer;
     }
 
-    public CartAdapter(Context mcontext, List<CartBean> mList) {
+    public CartAdapter(Activity mcontext, List<CartBean> mList) {
         this.mcontext = mcontext;
         this.mList = new ArrayList<CartBean>();
         this.mList.addAll(mList);
     }
 
+
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
-    /*    if(viewType==I.TYPE_FOOTER){
-            Log.i("main", "TYPE_FOOTER！！！！！！");
-            View view = LayoutInflater.from(mcontext).inflate(R.layout.foot_item, null, false);
-            holder = new FootViewHolder(view);
-        }
-        if(viewType==I.TYPE_ITEM){
-            Log.i("main", "进入了TYPE_ITEM！");*/
             View view = LayoutInflater.from(mcontext).inflate(R.layout.cart_item, null, false);
             holder = new CartViewHolder(view);
         return holder;
@@ -76,13 +81,36 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if(holder instanceof CartViewHolder){
             Log.i("main", "RecyclerView.ViewHolder holder");
             final CartBean cartBean = mList.get(position);
-            GoodDetailsBean goods = cartBean.getGoods();
+            final GoodDetailsBean goods = cartBean.getGoods();
             mCartViewHolder = (CartViewHolder) holder;
             mCartViewHolder.isCheckBox.setChecked(true);
             ImageUtils.setBoutiqueImage(mcontext,goods.getGoodsThumb(),mCartViewHolder.mivImage);
             mCartViewHolder.mtv_name.setText(goods.getGoodsName());
             mCartViewHolder.mtv_num.setText("("+String.valueOf(cartBean.getCount())+")");
-            mCartViewHolder.mtv_money.setText(goods.getCurrencyPrice());
+            mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*cartBean.getCount());
+            Total += Utils.Money(goods.getCurrencyPrice()) * cartBean.getCount();
+            Utils.MoneyDesc(mcontext,Total);
+            mCartViewHolder.mtn_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String num = mCartViewHolder.mtv_num.getText().toString();
+                    int number=Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")")));
+                    number++;
+                    mCartViewHolder.mtv_num.setText("("+number+")");
+                    mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*number);
+                }
+            });
+            mCartViewHolder.mtn_reduce.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String num = mCartViewHolder.mtv_num.getText().toString();
+                    int number=Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")")));
+                    number--;
+                    mCartViewHolder.mtv_num.setText("("+number+")");
+                    mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*number);
+                }
+            });
+
         }
         if(holder instanceof FootViewHolder){
             mFootViewHolder = (FootViewHolder) holder;
@@ -92,7 +120,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mList==null?1:mList.size();
+        return mList==null?0:mList.size();
     }
 
     public void initData(ArrayList<CartBean> arr,int DOWN_CODE) {

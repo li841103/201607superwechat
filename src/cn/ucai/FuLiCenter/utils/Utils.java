@@ -1,7 +1,9 @@
 package cn.ucai.FuLiCenter.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -16,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.FuLiCenterApplication;
+import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.bean.CartBean;
 import cn.ucai.FuLiCenter.widget.I;
 import cn.ucai.FuLiCenter.bean.Pager;
@@ -217,5 +220,14 @@ public class Utils {
             count += cart.getCount();
         }
         return count;
+    }
+
+
+    public static int Money(String money){
+        return Integer.valueOf(money.substring(1));
+    }
+
+    public static void MoneyDesc(final Activity activity,int money){
+        ((TextView)activity.findViewById(R.id.tv_Total)).setText("合计：￥"+money);
     }
 }

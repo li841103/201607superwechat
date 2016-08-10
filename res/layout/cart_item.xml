@@ -9,6 +9,8 @@
         android:layout_height="100dp"
         android:background="@color/white">
         <CheckBox
+            android:checked="true"
+            style="@style/CustomCheckboxTheme"
             android:id="@+id/cb_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +31,10 @@
             android:layout_toRightOf="@+id/iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="这个商品的名字"
+            android:text="这个商品的名字这个商品的名字这个商品的名字这个商品的名字这个商品的名字这个商品的名字这个商品的名字"
+            android:lines="1"
+            android:ellipsize="end"
+            android:paddingRight="60dp"
             android:textColor="@color/ebpay_text_orange1"
             android:textSize="20dp"
             />

@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.adapter.CartAdapter;
@@ -47,8 +49,21 @@ public class CartFragment extends Fragment {
         mContext=(FuLiCenterActivity)getContext();
         initView(view);
         initData();
+        setListener();
         return view;
 }
+
+    private void setListener() {
+        mbtn_Purchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(DemoHXSDKHelper.getInstance().isLogined()&&mCartAdapter.Total>0){
+                    startActivity(new Intent(mContext,Settlement.class));
+                }
+            }
+        });
+
+    }
 
     private void initData() {
         mCartAdapter.initData(mlist,0);
@@ -57,7 +72,6 @@ public class CartFragment extends Fragment {
     public CartFragment() {
         // Required empty public constructor
     }
-
 
 
     private void initView(View view) {

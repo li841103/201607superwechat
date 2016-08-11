@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.okhttp.internal.Util;
 
@@ -20,14 +22,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.ucai.FuLiCenter.D;
+import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.activity.Boutique_DetailsActivity;
 import cn.ucai.FuLiCenter.activity.CartActivity;
 import cn.ucai.FuLiCenter.activity.CartFragment;
+import cn.ucai.FuLiCenter.activity.Settlement;
 import cn.ucai.FuLiCenter.bean.BoutiqueBean;
 import cn.ucai.FuLiCenter.bean.CartBean;
 import cn.ucai.FuLiCenter.bean.GoodDetailsBean;
+import cn.ucai.FuLiCenter.bean.MessageBean;
 import cn.ucai.FuLiCenter.utils.ImageUtils;
+import cn.ucai.FuLiCenter.utils.OkHttpUtils2;
 import cn.ucai.FuLiCenter.utils.Utils;
 import cn.ucai.FuLiCenter.widget.I;
 
@@ -41,7 +47,7 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     CartViewHolder mCartViewHolder;
     FootViewHolder mFootViewHolder;
     String footer;
-    int Total;
+    public static int Total,Save;
 
 
 
@@ -89,15 +95,32 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             mCartViewHolder.mtv_num.setText("("+String.valueOf(cartBean.getCount())+")");
             mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*cartBean.getCount());
             Total += Utils.Money(goods.getCurrencyPrice()) * cartBean.getCount();
+            int Currency=Utils.Money(goods.getCurrencyPrice()) * cartBean.getCount();
+            int RankPrice=Utils.Money(goods.getRankPrice()) * cartBean.getCount();
+            Log.i("main", "Total=" + Total + "   RankPrice=" + RankPrice);
+            Save=Currency-RankPrice;
+            Utils.SaveDesc(mcontext,Save);
             Utils.MoneyDesc(mcontext,Total);
             mCartViewHolder.mtn_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     String num = mCartViewHolder.mtv_num.getText().toString();
                     int number=Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")")));
+                    int i1=Utils.Money(goods.getCurrencyPrice())*number;
+                    int y1=Utils.Money(goods.getRankPrice())*number;
                     number++;
+                    int i2=Utils.Money(goods.getCurrencyPrice())*number;
+                    int i3=i2-i1;
+                    Total+=i3;
+                    int y2=Utils.Money(goods.getRankPrice())*number;
+                    int y3 = y1 - y2;
+                    Log.i("main", "i2=" + i2 + " y2=" + y2);
+                    Save += y3;
                     mCartViewHolder.mtv_num.setText("("+number+")");
                     mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*number);
+                    Utils.MoneyDesc(mcontext,Total);
+                    Utils.SaveDesc(mcontext,Save);
+
                 }
             });
             mCartViewHolder.mtn_reduce.setOnClickListener(new View.OnClickListener() {
@@ -105,11 +128,42 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 public void onClick(View view) {
                     String num = mCartViewHolder.mtv_num.getText().toString();
                     int number=Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")")));
+                    int i1=Utils.Money(goods.getCurrencyPrice())*number;
                     number--;
+                    if(number<=0){
+                        return;
+                    }
+                    int i2=Utils.Money(goods.getCurrencyPrice())*number;
+                    int y2=Utils.Money(goods.getRankPrice())*number;
+                    int i3=i1-i2;
+                    int y3 = i2 - y2;
+                    Total-=i3;
+                    Save -= y3;
                     mCartViewHolder.mtv_num.setText("("+number+")");
                     mCartViewHolder.mtv_money.setText("￥"+Utils.Money(goods.getCurrencyPrice())*number);
+                    Utils.SaveDesc(mcontext,Save);
+                    Utils.MoneyDesc(mcontext,Total);
                 }
             });
+            mCartViewHolder.isCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b){
+                        Log.i("main", "CheckBox选中状态！");
+                        Total += Utils.Money(goods.getCurrencyPrice()) * cartBean.getCount();
+                        Utils.MoneyDesc(mcontext,Total);
+                    }else{
+                        String num = mCartViewHolder.mtv_num.getText().toString();
+                        Log.i("main","在Check未选中状态，num="+num+"   单价="+goods.getCurrencyPrice()
+                        +"  当前选中商品数量="+Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")"))));
+
+                        Total-=Utils.Money(goods.getCurrencyPrice())*Integer.valueOf(num.substring(num.indexOf("(")+1,num.lastIndexOf(")")));
+                        Utils.MoneyDesc(mcontext,Total);
+                    }
+                }
+
+            } );
+//
 
         }
         if(holder instanceof FootViewHolder){
@@ -141,9 +195,12 @@ public class CartAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         CheckBox isCheckBox;
         ImageView mivImage;
         TextView mtv_name,mtv_num,mtv_money;
-        Button mtn_reduce,mtn_add;
+        Button mtn_reduce,mtn_add,mbtn_purchase;
+
+
         public CartViewHolder(View itemView) {
             super(itemView);
+            mbtn_purchase = (Button) itemView.findViewById(R.id.btn_purchase);
             isCheckBox = (CheckBox) itemView.findViewById(R.id.cb_checkbox);
             mivImage = (ImageView) itemView.findViewById(R.id.iv_image);
             mtv_name = (TextView) itemView.findViewById(R.id.tv_name);

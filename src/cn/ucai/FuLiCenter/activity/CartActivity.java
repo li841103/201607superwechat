@@ -1,6 +1,7 @@
 package cn.ucai.FuLiCenter.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.ucai.FuLiCenter.DemoHXSDKHelper;
 import cn.ucai.FuLiCenter.FuLiCenterApplication;
 import cn.ucai.FuLiCenter.R;
 import cn.ucai.FuLiCenter.adapter.CartAdapter;
@@ -49,6 +51,7 @@ public class CartActivity extends BaseActivity {
         mContext=this;
         initView();
         initData();
+
     }
 
 

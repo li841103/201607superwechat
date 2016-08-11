@@ -227,7 +227,12 @@ public class Utils {
         return Integer.valueOf(money.substring(1));
     }
 
+
+
     public static void MoneyDesc(final Activity activity,int money){
         ((TextView)activity.findViewById(R.id.tv_Total)).setText("合计：￥"+money);
+    }
+    public static void SaveDesc(final Activity activity,int money){
+        ((TextView)activity.findViewById(R.id.tv_save)).setText("节省：￥"+money);
     }
 }
